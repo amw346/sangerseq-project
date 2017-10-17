@@ -60,7 +60,7 @@ for (d in 1:7) {
     
     combined =addseq(seq1,seq2, index, cutSeq1) 
     name = paste(d, "and", i) 
-    combinedtypes = rbind(combinedtypes, c(name,combined))
+    combinedtypes = rbind(combinedtypes, combined)
   } 
 }
 
@@ -123,4 +123,124 @@ addbases <- function(a,b) {
   }
   if (a == "N") {return("N")}
   return ("input strings not valid")	
+}
+
+
+
+#10-17-17
+seqA =  "gtaagttgacgtggccgaaactgctcccccgctcccaggatggaggcttctgat"
+seqB = "gaatttcaccgacttcatgcacagcttcatgattgtgttcc"
+seqC = "gtaagttgacgtggccgaaactgctcccccgctcccaggatggaggcttcacccgtcggaataaatatattttacacttatcactctctctttctctctctctcaactttattccgaccatcctttgcag"
+seqD = "gtaagttgccaggatggaggcttctgat"
+seqE = "gtggccgaaactgctcccccgctcccaggatggaggcttcacccgtcggaataaatatattttacacttatcactc"
+seqF = "gcacagcttcatgattgtgttcc"
+seqG = "cccccgctcccaggatggaggcttcacccgtcggaataaatatattttacacttatcactc"
+seqH = "gtaagttgacgtggccgaaactgctcccccgctcccaggatggaggcttctgat"
+
+library(seqinr)
+
+seqvec= c(1:15)
+seqvec[1] = "ctg"
+filenames <- list.files("Z:/Shared Documents/Alicia Williams/HapSubset", pattern= "*.fas", full.name = TRUE)
+for (i in 1:15) {
+  seqvec[i] = read.fasta(file=filenames[i], as.string = TRUE, forceDNAtolower = TRUE, set.attributes = FALSE)
+}
+
+
+
+library(seqinr)
+n = c(1:118)
+seq= data.frame(n)
+filenames <- list.files("Z:/Shared Documents/Alicia Williams/haplotypes", pattern= "*.fas", full.name = TRUE)
+namelist = data.frame(n)
+name <- list.files("Z:/Shared Documents/Alicia Williams/haplotypes", pattern= "*.fas")
+for (i in 1:118) {
+  namelist[i,1] = filenames[i]
+  seq[i,1] = read.fasta(file=filenames[i], as.string = TRUE, forceDNAtolower = TRUE, set.attributes = FALSE)
+}
+vec = c(1)
+vec[1] = seq[1,1]
+
+seqvec[d:15]
+d= 1
+seq = c(seqA,seqB,seqC)
+allign = pairwiseAlignment(seq,seqD)
+allign[2]
+str(allign)
+writePairwiseAlignments(allign)
+seq[1]
+
+
+
+
+
+
+n = c(1:15)
+seq = data.frame(n)
+vec1 = c(1:15)
+filenames <- list.files("Z:/Shared Documents/Alicia Williams/HapSubset", pattern= "*.fas", full.name = TRUE)
+for (i in 1:15) {
+  seq[i,1] = read.fasta(file=filenames[i], as.string = TRUE, forceDNAtolower = TRUE, set.attributes = FALSE)
+  vec1[i] = seq[i,1]
+}
+vec1[15]
+combinedtypes = vector() 
+for (d in 1:14) { 
+    d=14
+    allign = pairwiseAlignment(vec1[(d+1):15],vec1[d], gapOpening = 100, gapExtension = 100)
+    allign = pairwiseAlignment(vec1[(d+1):15],vec1[d])
+    writePairwiseAlignments(allign[1])
+    s = summary(allign[1])
+    x = "NaN" 
+    str(allign[1])
+    index = 0 
+    while (x == "NaN") { 
+      index = 1 +index 
+      x = str(s@mismatchSummary)$pattern$position[index,3] 
+    } 
+    
+    cutSeq1 = TRUE
+    #define cutseq1 boolean
+    if  (allign@pattern@range@start == 1) {
+      cutSeq1 == FALSE
+    }
+    
+    combined =addseq(seq1,seq2, index, cutSeq1) 
+    DNAString(combined)
+    combinedtypes = rbind(combinedtypes,combined)
+  } 
+}
+
+combinedtypes = matrix() 
+for (d in 1:14) { 
+  y = 15-d 
+  
+  for (i in 1:y) { 
+    
+    seq1 = seq[d,1] 
+    seq2 = seq[i+d,1] 
+    
+    allign = pairwiseAlignment(seq1,seq2)
+  
+    
+    s = summary(allign) 
+    
+    #define start index
+    x = "NaN" 
+    index = 0 
+    while (x == "NaN") { 
+      index = 1 +index 
+      x = s@mismatchSummary$pattern$position[index,3] 
+    } 
+    
+    cutSeq1 = TRUE
+    #define cutseq1 boolean
+    if  (allign@pattern@range@start == 1) {
+      cutSeq1 == FALSE
+    }
+    
+    combined =addseq(seq1,seq2, index, cutSeq1) 
+    DNAString(combined)
+    combinedtypes = rbind(combinedtypes,combined)
+  } 
 }
