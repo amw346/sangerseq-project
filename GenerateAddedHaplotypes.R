@@ -116,3 +116,188 @@ for (d in 1:117) {
 }
 
 
+
+#Testcases 10182017
+
+seqA =  "gtaagttgacgtggccgaaactgctcccccgctcccaggatggaggcttctgat"
+seqB =  "gaatttcaccgacttcatgcacagcttcatgattgtgttcc"
+seqC = "gtaagttgacgtggccgaaactgctcccccgctcccaggatggaggcttcacccgtcggaataaatatattttacacttatcactctctctttctctctctctcaactttattccgaccatcctttgcag"
+seqD = "gtaagttgccaggatggaggcttctgat"
+seqE = "ccgaaactgctcccccgctcccaggatggaggcttcacccgtcggaataaatatattttacacttatcactc"
+seqF = "gcacagcttcatgattgtgttcc"
+seqG = "cccccgctcccaggatggaggcttcacccgtcggaataaatatattttacacttatcactc"
+seqH = "gtaagttgacgtggccgaaactgctcccccgctcccaggatggaggcttctgat"
+
+seq = data.frame(c(1:8))
+seq[1,1] = seqA
+seq[2,1] = seqB
+seq[3,1] = seqC
+seq[4,1] = seqD
+seq[5,1] = seqE
+seq[6,1] = seqF
+seq[7,1] = seqG
+seq[8,1] = seqH
+
+TESTcombinedtypes = matrix() 
+#two loops to make ((n-1)*n)/2 pairwise comparisons
+for (d in 1:7) { 
+  y = 8-d 
+  for (i in 1:y) { 
+    
+    #initialize two sequences
+    seq1 = seq[d,1] 
+    seq2 = seq[i+d,1] 
+    
+    #alligning them
+    allign = pairwiseAlignment(seq1,seq2)
+    s = summary(allign) 
+    
+    #define start index
+    x = "NaN" 
+    index = 0 
+    while (x == "NaN") { 
+      index = 1 +index 
+      x = s@mismatchSummary$pattern$position[index,3] 
+    } 
+    
+    #define cutseq1 boolean
+    #cutseq1 = TRUE means the first sequence inputted into pairwiseAllign needs to be cut
+    cutSeq1 = TRUE
+    if  (allign@pattern@range@start == 1) {
+      cutSeq1 == FALSE
+    }
+    
+    #combine seq1&2 and cut them to size
+    combined =addseq(seq1,seq2, index, cutSeq1) 
+    TESTcombinedtypes = rbind(TESTcombinedtypes,combined)
+  } 
+}
+
+
+#10-19-2017 edits
+ab = pairwiseAlignment(seqA,seqH)
+ab = pairwiseAlignment(seqA,seqB)
+writePairwiseAlignments(ab)
+
+TESTcombinedtypes[2]
+D = DNAString(TESTcombinedtypes[2])
+pairwiseAlignment(TESTcombinedtypes[3],TESTcombinedtypes[4])
+
+
+for (d in 1:7) { 
+  y = 8-d 
+  for (i in (d+1):8) { 
+        #initialize two sequences
+        seq1 = seq[d,1] 
+        seq2 = seq[i+d,1] 
+        
+        #alligning them
+        allign = pairwiseAlignment(seq1,seq2)
+        s = summary(allign) 
+        
+        #define start index
+        x = "NaN" 
+        index = 0 
+        while (x == "NaN") { 
+          index = 1 +index 
+          x = s@mismatchSummary$pattern$position[index,3] 
+        } 
+        
+        #define cutseq1 boolean
+        #cutseq1 = TRUE means the first sequence inputted into pairwiseAllign needs to be cut
+        cutSeq1 = TRUE
+        if  (allign@pattern@range@start == 1) {
+          cutSeq1 == FALSE
+        }
+        
+        #combine seq1&2 and cut them to size
+        combined =addseq(seq1,seq2, index, cutSeq1) 
+        combinedtypes = rbind(combinedtypes,combined)
+      } 
+    } 
+    
+
+#test for 8 sequenves
+for (d in 1:7) { 
+  y = 8-d 
+  for (i in 1:y) { 
+    c = c(d, i+d)
+    t = i +d
+    a = pairwiseAlignment(seq[d,1],seq[t,1])
+    writePairwiseAlignments(a)
+    print(c(c, seq[d,1],seq[t,1]))
+  }}
+
+seq[5,1]
+
+
+# compare
+getPriSec <- function(file) {
+  #getPriSec inputs a file path ie "/Users/aliciawilliams/Desktop/ab1/practicefile2.ab1" and outputs a list containing the primary and secondary sequences as strings
+  sangerobj <- readsangerseq(file)
+  basecalls <- makeBaseCalls(sangerobj)
+  primary <- primarySeq(basecalls, string = 'TRUE')
+  secondary <- secondarySeq(basecalls, string = 'TRUE')
+  return((list(PrimarySeq = primary, SecondarySeq = secondary)))
+}
+
+library(sangerseqR)
+sangerobj <- readsangerseq("C:/Users/amw346/Desktop/aabys11May16-2FkdrFL-R7skdrFL.ab1")
+getPriSec()
+
+#original
+clipToString <- function(sangob) { 
+  pri = primarySeq(sangob,string = TRUE) 
+  len = nchar(pri) 
+  num = 0 
+  found = FALSE 
+  for (i in 1:len) { 
+    c1= substr(pri,i,i) 
+    c2 = substr(pri,i+1,i+1) 
+    c3 = substr(pri,i+2,i+2) 
+    if (found) { 
+      return(substr(pri,20,num-2)) 
+    } 
+    if ((c1 == "N") & c2 == "N" & c3 == "N") { 
+      found = TRUE 
+    } 
+    num = i +1 
+  } 
+  return (num)
+} 
+
+
+#modified
+clipIndex <- function(sangob) { 
+  pri = primarySeq(sangob,string = TRUE) 
+  len = nchar(pri) 
+  num = 0 
+  found = FALSE 
+  for (i in 1:len) { 
+    c1= substr(pri,i,i) 
+    c2 = substr(pri,i+1,i+1) 
+    c3 = substr(pri,i+2,i+2) 
+    if (found) { 
+      return(num-2) 
+    } 
+    if ((c1 == "N") & c2 == "N" & c3 == "N") { 
+      found = TRUE 
+    } 
+    num = i +1 
+  } 
+  return (num-2)
+} 
+
+compareHap<- function(file) {
+  sangerobj <- readsangerseq(file)
+  basecalls <- makeBaseCalls(sangerobj)
+  pri <- primarySeq(basecalls, string = 'TRUE')
+  sec <- secondarySeq(basecalls, string = 'TRUE')
+  index = clipIndex(sangerobj)
+  cutpri = substr(pri,20,index)
+  cutsec = substr(sec,20,index)
+ p = pairwiseAlignment(cutpri,cutsec)
+  writePairwiseAlignments(p)
+}
+
+
