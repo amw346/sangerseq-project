@@ -244,3 +244,6 @@ for (d in 1:14) {
     combinedtypes = rbind(combinedtypes,combined)
   } 
 }
+
+
+
