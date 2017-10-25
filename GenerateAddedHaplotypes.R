@@ -298,14 +298,15 @@ compareHap<- function(file) {
   cutpri = substr(pri,20,index)
   cutsec = substr(sec,20,index)
   combined = addPriSec2(cutpri,cutsec)
-  checkMasterList(combined)
+  match = checkMasterList(combined,combinedtypes)
 }
 
-checkMasterList<- function(seq, master) {
-  len = dim(list)[1]
+checkMasterListORIGINAL<- function(seq, master) {
+  len = dim(master)[1]
   found = FALSE
+  
   for (i in 2:len) {
-    #compare
+  
     master[i]
     if (found = TRUE) {
       print("match found")
@@ -315,7 +316,6 @@ checkMasterList<- function(seq, master) {
   print("no match found") 
 }
   
-
 p = pairwiseAlignment(combined,seqA)
 writePairwiseAlignments(p)
 
@@ -396,4 +396,48 @@ addbases2 <- function(a,b) {
   return ("input strings not valid")	
 }
 
+#20171024
+library(stringi)
+
+#MOST UP TO DATE CHECKMASTERLIST
+checkMasterList<- function(newseq, master) {
+ 
+  found = FALSE
+  
+  for (i in 2:len) {
+    found = (stri_detect_fixed(newseq,master[i,1], case_insensitive = TRUE) | stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE))
+    if (found == TRUE) {
+      print("match found")
+      return(master[i,1])
+    }
+  }
+  print("no match found") 
+  return(found)
+}
+
+#RANDOM CRAP USED TO TEST CHECK MASTER LIST AND COMPAREHAP
+newseq =  "gtaagttgacgtggccgaaactgctcccccgctcccaggatggag"
+
+seq[1,2]
+
+stri_detect_fixed(seq[1,1],newseq)
+stri_detect_fixed("aaa", "AAA", case_insensitive = TRUE)
+stri_detect_fixed("AAA", "A")
+
+
+
+#NChis11May16-1FkdrFL-R7skdrFL
+
+file="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
+  compareHap<- function(file) {
+  sangerobj <- readsangerseq(file)
+  index = clipIndex(sangerobj)
+  basecalls <- makeBaseCalls(sangerobj)
+  pri <- primarySeq(basecalls, string = 'TRUE')
+  sec <- secondarySeq(basecalls, string = 'TRUE')
+  cutpri = substr(pri,20,index)
+  cutsec = substr(sec,20,index)
+  combined = addPriSec2(cutpri,cutsec)
+  match = checkMasterList(combined,seq)
+}
 
