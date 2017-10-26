@@ -138,7 +138,7 @@ seq[6,1] = seqF
 seq[7,1] = seqG
 seq[8,1] = seqH
 
-TESTcombinedtypes = matrix() 
+TESTcombinedtypes3 = matrix() 
 #two loops to make ((n-1)*n)/2 pairwise comparisons
 for (d in 1:7) { 
   y = 8-d 
@@ -169,7 +169,7 @@ for (d in 1:7) {
     
     #combine seq1&2 and cut them to size
     combined =addseq(seq1,seq2, index, cutSeq1) 
-    TESTcombinedtypes = rbind(TESTcombinedtypes,combined)
+    TESTcombinedtypes3 = rbind(TESTcombinedtypes3,combined)
   } 
 }
 
@@ -396,12 +396,12 @@ addbases2 <- function(a,b) {
   return ("input strings not valid")	
 }
 
-#20171024
+#20171024 with edits from 20171025
 library(stringi)
 
 #MOST UP TO DATE CHECKMASTERLIST
 checkMasterList<- function(newseq, master) {
- 
+  len = dim(master)[1]
   found = FALSE
   
   for (i in 2:len) {
@@ -429,7 +429,7 @@ stri_detect_fixed("AAA", "A")
 #NChis11May16-1FkdrFL-R7skdrFL
 
 file="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
-  compareHap<- function(file) {
+  compareHap<- function(file, master) {
   sangerobj <- readsangerseq(file)
   index = clipIndex(sangerobj)
   basecalls <- makeBaseCalls(sangerobj)
@@ -438,6 +438,71 @@ file="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
   cutpri = substr(pri,20,index)
   cutsec = substr(sec,20,index)
   combined = addPriSec2(cutpri,cutsec)
-  match = checkMasterList(combined,seq)
+  match = checkMasterList(combined,master)
+  return (match)
+  }
+  
+compareHap("C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1")
+
+#20171026 Testing of comparehap
+file="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
+compareHap<- function(file, master) {
+  sangerobj <- readsangerseq(file)
+  index = clipIndex(sangerobj)
+  basecalls <- makeBaseCalls(sangerobj)
+  pri <- primarySeq(basecalls, string = 'TRUE')
+  sec <- secondarySeq(basecalls, string = 'TRUE')
+  cutpri = substr(pri,20,index)
+  cutsec = substr(sec,20,index)
+  combined = addPriSec2(cutpri,cutsec)
+  match = checkMasterList(combined,master)
+  return (match)
 }
+len
+compareHap("C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1",TESTcombinedtypes)
+
+TESTcombinedtypes
+
+
+MODcheckMasterList<- function(newseq, master) {
+  len = dim(master)[1]
+  num= 0
+  matchseq= data.frame(matches)
+  for (i in 2:len) {
+    found = FALSE
+    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE))
+    if (found == TRUE) {
+      print("match found")
+      num = num +1
+      matchseq= rbind(matchseq,master[i,1])
+    }
+  }
+  
+  return(c(match = matchseq, nummatches = num))
+}
+
+TESTcombinedtypes3[2,1]
+
+matchseq= rbind(matchseq,TESTcombinedtypes3[2])
+matchseq= rbind(matchseq,TESTcombinedtypes3[3])
+
+matchseq= data.frame(matches = character())
+matchseq= rbind(matchseq,c(matches = newseq))
+
+matchseq= rbind(matchseq,TESTcombinedtypes3[3])
+newseq =  "SYRARWYKRCKYSSCCGMWMCYRSKMYSSMGSYYYCASSMKKSRGRMTWMWKAT"
+newseq2  = "SYRARWYKRCKYSSCCGMWMCYRSKMYSSMGSYYYCASSM"
+newseq3= "SYRARWYKRCKYSSCCGMWMCYRSK"
+newlist = MODcheckMasterList(newseq3, TESTcombinedtypes3)
+
+stri_detect_fixed("A","AAA")
+stri_detect_fixed("AAA","AA")
+
+data = TESTcombinedtypes3[-1,]
+len= dim(TESTcombinedtypes3)[1]
+for (i in 2:len)
+   MODcheckMasterList(TESTcombinedtypes3[i],TESTcombinedtypes3) 
+
+
+
 
