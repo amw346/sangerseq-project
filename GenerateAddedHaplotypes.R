@@ -10,8 +10,6 @@ for (i in 1:118) {
   seq[i,1] = read.fasta(file=filenames[i], as.string = TRUE, forceDNAtolower = TRUE, set.attributes = FALSE)
 }
 
-
-
 addseq <- function(seq1,seq2, index, CutSeq1) { 
   #input is two string sequences of DNA, an index integer where alligning should start and a boolean cutseq1 indicating which sequence to cut
   #cutseq1 = TRUE means seq1 should be cut
@@ -465,16 +463,18 @@ TESTcombinedtypes
 
 
 MODcheckMasterList<- function(newseq, master) {
-  len = dim(master)[1]
+  len = dim(TESTcombinedtypes3)[1]
   num= 0
-  matchseq= data.frame(matches)
+  matchseq= matrix()
   for (i in 2:len) {
     found = FALSE
-    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE))
+    found = (stri_detect_fixed(TESTcombinedtypes3[i,1],newseq4, case_insensitive = TRUE))
     if (found == TRUE) {
+      print(i)
       print("match found")
       num = num +1
-      matchseq= rbind(matchseq,master[i,1])
+      print(num)
+      matchseq= rbind(matchseq,TESTcombinedtypes3[i,1])
     }
   }
   
@@ -493,16 +493,122 @@ matchseq= rbind(matchseq,TESTcombinedtypes3[3])
 newseq =  "SYRARWYKRCKYSSCCGMWMCYRSKMYSSMGSYYYCASSMKKSRGRMTWMWKAT"
 newseq2  = "SYRARWYKRCKYSSCCGMWMCYRSKMYSSMGSYYYCASSM"
 newseq3= "SYRARWYKRCKYSSCCGMWMCYRSK"
+newseq4 = "SYRARWYKSCWSSMYSGMKSCYWSKRWK"
 newlist = MODcheckMasterList(newseq3, TESTcombinedtypes3)
 
 stri_detect_fixed("A","AAA")
 stri_detect_fixed("AAA","AA")
 
-data = TESTcombinedtypes3[-1,]
-len= dim(TESTcombinedtypes3)[1]
-for (i in 2:len)
+data = TESTcombinedtypes3[-1]
+len= dim(TESTcombinedtypes3[1])[1]
+for (i in 2:len) {
    MODcheckMasterList(TESTcombinedtypes3[i],TESTcombinedtypes3) 
+}
 
 
+str(TESTcombinedtypes3)
 
+#10312017
+seqA =  "gtaagttgacgtggccgaaactgctcccccgctcccaggatggaggcttctgat"
+seqB =  "gaatttcaccgacttcatgcacagcttcatgattgtgttcc"
+seqC = "gtaagttgacgtggccgaaactgctcccccgctcccaggatggaggcttcacccgtcggaataaatatattttacacttatcactctctctttctctctctctcaactttattccgaccatcctttgcag"
+seqD = "gtaagttgccaggatggaggcttctgat"
+seqE = "ccgaaactgctcccccgctcccaggatggaggcttcacccgtcggaataaatatattttacacttatcactc"
+seqF = "gcacagcttcatgattgtgttcc"
+seqG = "cccccgctcccaggatggaggcttcacccgtcggaataaatatattttacacttatcactc"
+seqH = "gtaagttgacgtggccgaaactgctcccccgctcccaggatggaggcttctgat"
+
+seq = data.frame(c(1:8))
+seq[1,1] = seqA
+seq[2,1] = seqB
+seq[3,1] = seqC
+seq[4,1] = seqD
+seq[5,1] = seqE
+seq[6,1] = seqF
+seq[7,1] = seqG
+seq[8,1] = seqH
+
+TESTcombinedtypes4 = matrix() 
+#two loops to make ((n-1)*n)/2 pairwise comparisons
+for (d in 1:7) { 
+  y = 8-d 
+  for (i in 1:y) { 
+    
+    #initialize two sequences
+    seq1 = seq[d,1] 
+    seq2 = seq[i+d,1] 
+    
+    #alligning them
+    allign = pairwiseAlignment(seq1,seq2)
+    s = summary(allign) 
+    
+    #define start index
+    x = "NaN" 
+    index = 0 
+    while (x == "NaN") { 
+      index = 1 +index 
+      x = s@mismatchSummary$pattern$position[index,3] 
+    } 
+    
+    #define cutseq1 boolean
+    #cutseq1 = TRUE means the first sequence inputted into pairwiseAllign needs to be cut
+    cutSeq1 = TRUE
+    if  (allign@pattern@range@start == 1) {
+      cutSeq1 == FALSE
+    }
+    
+    #combine seq1&2 and cut them to size
+    combined =addseq(seq1,seq2, index, cutSeq1) 
+    TESTcombinedtypes4 = rbind(TESTcombinedtypes4,combined)
+  } 
+}
+
+#code to input your own 118
+len5 = dim(seq)[1]
+for (i in 1:len5) {
+  print(i)
+  seq1 = seq[i,1] 
+  TESTcombinedtypes4 = rbind(TESTcombinedtypes4,seq1)
+}
+
+#how many am i inside
+newseq4 = "SYRARWYKRCKYSSCCGMWMCYRSKMYSSMGSYYYCASSM" 
+MODcheckMasterList2<- function(newseq, master,curI) {
+  len = dim(master)[1]
+  matchseq= matrix()
+  matchnum= matrix()
+  curnum = matrix()
+  for (i in 2:len) {
+    i = 3
+    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE))
+    if (found == TRUE & i !=curI) {
+      print(i)
+      print("match found")
+      matchseq= rbind(matchseq,master[i,1])
+      matchnum= rbind(matchnum,i)
+      curnum = rbind(curnum,curI)
+    }
+  }
+  newr= data.frame(seq=matchseq[,1],index = matchnum[,1], current = curnum[,1])
+  if(nrow(newr) > 1) {
+    return(newr)
+  } else {
+    empty = TRUE
+    return(empty)
+  }
+ 
+}
+
+#run through all the sequences in master
+len6 = dim(TESTcombinedtypes4)[1] 
+dataf = data.frame(seq= c("string"),index= c(1))
+for (j in 2:len6) {
+  newr = MODcheckMasterList2(TESTcombinedtypes[j,1],TESTcombinedtypes4,j)
+  if (!is.logical(newr)) {
+    dataf = rbind(dataf,newr)
+  } 
+}
+
+
+MODcheckMasterList2(newseq4, TESTcombinedtypes4, 1)[12]
 
