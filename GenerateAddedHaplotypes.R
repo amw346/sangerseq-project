@@ -579,17 +579,19 @@ MODcheckMasterList2<- function(newseq, master,curI) {
   matchnum= matrix()
   curnum = matrix()
   for (i in 2:len) {
-    i = 3
+    
+    
     found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE))
     if (found == TRUE & i !=curI) {
       print(i)
       print("match found")
       matchseq= rbind(matchseq,master[i,1])
       matchnum= rbind(matchnum,i)
-      curnum = rbind(curnum,curI)
+      #curnum = rbind(curnum,curI)
     }
   }
-  newr= data.frame(seq=matchseq[,1],index = matchnum[,1], current = curnum[,1])
+  newr= data.frame(seq=matchseq[,1],index = matchnum[,1])
+  #, current = curnum[,1]
   if(nrow(newr) > 1) {
     return(newr)
   } else {
@@ -603,12 +605,67 @@ MODcheckMasterList2<- function(newseq, master,curI) {
 len6 = dim(TESTcombinedtypes4)[1] 
 dataf = data.frame(seq= c("string"),index= c(1))
 for (j in 2:len6) {
-  newr = MODcheckMasterList2(TESTcombinedtypes[j,1],TESTcombinedtypes4,j)
+  newr = MODcheckMasterList2(TESTcombinedtypes4[j,1],TESTcombinedtypes4,j)
   if (!is.logical(newr)) {
     dataf = rbind(dataf,newr)
   } 
 }
 
 
-MODcheckMasterList2(newseq4, TESTcombinedtypes4, 1)[12]
+data = MODcheckMasterList2(newseq4, TESTcombinedtypes4, 1)
 
+
+#11022017
+#how many am i inside
+newseq4 = "SYRARWYKRCKYSSCCGMWMCYRSKMYSSMGSYYYCASSM" 
+MODcheckMasterList2<- function(newseq, master,curI) {
+  len = dim(master)[1]
+  matchseq= matrix()
+  matchnum= matrix()
+  curnum = matrix()
+  for (i in 2:len) {
+    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE))
+    if (found == TRUE & i !=curI) {
+      print(i)
+      print(curI)
+      print("match found")
+      matchseq= rbind(matchseq,master[i,1])
+      matchnum= rbind(matchnum,i)
+      curnum = rbind(curnum,curI)
+    }
+  }
+  newr= data.frame(seq=matchseq[,1],index = matchnum[,1],original = curnum[,1])
+  #, current = curnum[,1]
+  if(nrow(newr) > 1) {
+    return(newr)
+  } else {
+    empty = TRUE
+    return(empty)
+  }
+  
+}
+
+#run through all the sequences in master
+len6 = dim(TESTcombinedtypes4)[1] 
+dataf = data.frame(seq= c("string"),index= c(1),original = c(1))
+for (j in 2:len6) {
+  newr = MODcheckMasterList2(TESTcombinedtypes4[j,1],TESTcombinedtypes4,j)
+  if (!is.logical(newr)) {
+    dataf = rbind(dataf,newr)
+  } 
+}
+
+#code for combinedtypes
+len7 = dim(combinedtypes)[1]
+dataf = data.frame(seq= c("string"),index= c(1),original = c(1))
+for (h in 2:len7) {
+  newr = MODcheckMasterList2(combinedtypes[h,1],combinedtypes,h)
+  if (!is.logical(newr)) {
+    dataf = rbind(dataf,newr)
+  } 
+}
+
+combinedtypes[3]
+combinedtypes[56]
+combinedtypes[300]
+combinedtypes[4964]
