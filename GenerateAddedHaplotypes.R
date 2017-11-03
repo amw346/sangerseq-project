@@ -104,7 +104,7 @@ for (d in 1:117) {
     #cutseq1 = TRUE means the first sequence inputted into pairwiseAllign needs to be cut
     cutSeq1 = TRUE
     if  (allign@pattern@range@start == 1) {
-      cutSeq1 == FALSE
+      cutSeq1 = FALSE
     }
     
     #combine seq1&2 and cut them to size
