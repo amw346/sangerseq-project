@@ -10,8 +10,7 @@ for (i in 1:118) {
   }
 
 
-seq[1,2]
-current.seq = seq[1,1]
+library(stringi)
 for (i in 1:118) {
   current.seq = seq[i,1]
   his = FALSE
@@ -45,12 +44,48 @@ if(stri_detect_fixed(substr(current.seq,1,7),"gtaagtt", case_insensitive = TRUE)
   }
 }
 }
+for (d in 1:118) {
+  if (is.na(seq[d,3])) {
+    seq[d,3] = seq[d,1]}
+}
 
+#Code to generate the matrix of added pairwise combinations
+newCombined = data.frame() 
 
-  paste("")  
-
-write.fasta
-read.fasta()
+#two loops to make ((n-1)*n)/2 pairwise comparisons
+for (d in 1:117) { 
+  y = 118-d 
+  for (i in 1:y) { 
+    d=1
+    i=1
+    #initialize two sequences
+    seq1 = seq[d,3] 
+    seq2 = seq[i+d,3] 
+   
+    #alligning them
+    allign = pairwiseAlignment(seq1,seq2)
+    writePairwiseAlignments(allign)
+    s = summary(allign) 
+    index = allign@pattern@range@start
+    
+    allign2 = pairwiseAlignment(seq2,seq1)
+    writePairwiseAlignments(allign2)
+    s = summary(allign2) 
+    index2 = allign2@pattern@range@start
+    
+    #define cutseq1 boolean
+    #cutseq1 = TRUE means the first sequence inputted into pairwiseAllign needs to be cut
+    cutSeq1 = TRUE
+    if  (allign@pattern@range@start == 1) {
+      cutSeq1 = FALSE
+      index = index2
+    }
+    
+    #combine seq1&2 and cut them to size
+    combined =addseq(seq1,seq2, index, cutSeq1) 
+    newCombined[i+d,1] = combined
+  } 
+}
 
 
 
