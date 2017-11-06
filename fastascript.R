@@ -51,17 +51,17 @@ for (d in 1:118) {
 
 #Code to generate the matrix of added pairwise combinations
 newCombined = data.frame() 
-
+count = 1
 #two loops to make ((n-1)*n)/2 pairwise comparisons
 for (d in 1:117) { 
   y = 118-d 
   for (i in 1:y) { 
-    d=1
-    i=1
-    #initialize two sequences
-    seq1 = seq[d,3] 
-    seq2 = seq[i+d,3] 
    
+    #initialize two sequences
+    seq1 = seq[d,3]
+    name = seq[d,2]
+    seq2 = seq[i+d,3] 
+    name2 = seq[i+d,2]
     #alligning them
     allign = pairwiseAlignment(seq1,seq2)
     writePairwiseAlignments(allign)
@@ -83,7 +83,11 @@ for (d in 1:117) {
     
     #combine seq1&2 and cut them to size
     combined =addseq(seq1,seq2, index, cutSeq1) 
-    newCombined[i+d,1] = combined
+    newCombined[count,1] = combined
+    newCombined[count,2] = name
+    newCombined[count,3] = name2
+
+    count = count +1
   } 
 }
 
