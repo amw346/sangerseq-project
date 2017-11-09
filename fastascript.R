@@ -142,7 +142,7 @@ MODcheckMasterList2<- function(newseq, master,curI) {
       print(i)
       print(curI)
       print("match found")
-      matchseq= rbind(matchseq,master[i,1])
+      matchseq= rbind(matchseq, master[i,1])
       matchnum= rbind(matchnum,i)
       curnum = rbind(curnum,curI)
     }
@@ -167,8 +167,12 @@ for (j in 1:len8) {
     dataf2 = rbind(dataf2,newr)
   } 
 }
-
-
+newCombined[10,1]
+newCombined[11,1]
+newCombined[21,1]
+newCombined[41,1]
+newCombined[52,1]
+newCombined[96,1]
 
 #random code used to test
 seq[1,1]
@@ -190,6 +194,55 @@ combined =addseq(seq[1,3],seq[2,3], index, cutSeq1)
 newchar = addbases(substr(short,1,1), substr(newlong,1,1)) 
 combined= paste0(combined, newchar)
 
+#how many in 118 are exactly the same
+library(stringi)
+count = 1
+matchesog = data.frame()
+for (d in 1:117) { 
+  y = 118-d 
+  for (i in 1:y) { 
+    print("ggg")
+    print(i+d)
+    print(d)
+    #initialize two sequences
+    seq1 = seq[d,3]
+    name = seq[d,2]
+    seq2 = seq[i+d,3] 
+    name2 = seq[i+d,2]
+    if (stri_detect_fixed(seq1,seq2, case_insensitive = TRUE) & stri_detect_fixed(seq2,seq1, case_insensitive = TRUE)) {
+      matchesog[count, 1] = name
+      matchesog[count,2] = name2
+      count = count+1
+    }
+   
+  }}
 
 
+#how many matches match because of concidence
+count = 1
+matchesCOMBO = data.frame()
+for (d in 1:6903) { 
+  y = 6903-d 
+  for (i in 1:y) { 
+  
+    #initialize two sequences
+    seq1 = newCombined[d,1]
+    name = d 
+    seq2 = newCombined[i+d,1] 
+    name2 = i+d
+    if (stri_detect_fixed(seq1,seq2, case_insensitive = TRUE) & stri_detect_fixed(seq2,seq1, case_insensitive = TRUE)) {
+      matchesCOMBO[count, 1] = name
+      matchesCOMBO[count,2] = name2
+      count = count+1
+      print(d)
+    }
+    
+  }}
+seq1 = "CATGTGGTAAGTTGACGTGGCCGAAACTGCTCCCCCGCTCCCAGGATGGAGGCTTCTGATGRCCAATTAAAAAAAATTAAATCAACCTCTCTCTTTCTCTCTCTCTCWMMWYTWTWYYSYSYMYMYSYTKYRS"
+seq2="CATGTGGTAAGTTGACGTGGCCGAAACTRCTCCCCCGCTCCCAGGAKRGAGGCTTSWKMYGKMMWATWMAAAAAWWTKAMATYWAYCTCTCTCTTTCTCTCTCYCWMMWYTWTWYTCYSYMCWKYYGYWGSWK"
+d = 3
+i = 119-d
+
+newCombined[10,1]
+newCombined[11,1]
 
