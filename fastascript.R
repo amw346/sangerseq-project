@@ -218,7 +218,7 @@ for (d in 1:117) {
   }}
 
 
-#how many matches match because of concidence
+#how many matches match because of concidence gives index in newCombined
 count = 1
 matchesCOMBO = data.frame()
 for (d in 1:6903) { 
@@ -243,6 +243,190 @@ seq2="CATGTGGTAAGTTGACGTGGCCGAAACTRCTCCCCCGCTCCCAGGAKRGAGGCTTSWKMYGKMMWATWMAAAAA
 d = 3
 i = 119-d
 
-newCombined[10,1]
-newCombined[11,1]
+
+newCombined[3148,1]
+newCombined[5458,1]
+
+newCombined[3148,2:3]
+newCombined[5458,1:3]
+
+
+newCombined[10,1:3]
+newCombined[96,1:3]
+
+#test what the heck is happening with the 587 matches
+q = seq[11,3]
+z = seq[97,3]
+h = pairwiseAlignment(q,z)
+writePairwiseAlignments(h)
+
+s = seq[1,3]
+
+newcombined[10]
+
+g = pairwiseAlignment(q,s)
+writePairwiseAlignments(g)
+
+k = pairwiseAlignment(z,s)
+writePairwiseAlignments(k)
+h = pairwiseAlignment(seq[64,3],seq[104,3])
+writePairwiseAlignments(h)
+h@pattern@range@start
+seq[64,3]
+seq[104,3]
+g = pairwiseAlignment(seq[104,3],seq[31,3])
+writePairwiseAlignments(g)
+seq4 = substr(seq[64,3],143,nchar(seq[64,3]))
+
+g = pairwiseAlignment(seq[104,3],seq[31,3])
+writePairwiseAlignments(g
+        )
+
+#11142017 tests
+newCombined[10,1:3]
+newCombined[11,1:3]
+
+a = seq[11,3]
+ b =seq[1,3]
+c =seq[12,3]
+
+g = pairwiseAlignment(a,b)
+writePairwiseAlignments(g)
+
+k = pairwiseAlignment(b,c, type="local")
+pairwiseAlignment(b,c, type="local")
+writePairwiseAlignments(k)
+
+j = pairwiseAlignment(a,c)
+writePairwiseAlignments(j)
+
+samepairs = data.frame()
+count = 1
+for (i in 1:6903) {
+  if (newCombined[i,2] == "v101_sans_exons.seq" | newCombined[i,3] == "v101_sans_exons.seq" | newCombined[i,3] == "v70_sans_exons.seq" | newCombined[i,2] == "v70_sans_exons.seq") {
+    samepairs[count,1] = newCombined[i,1]
+    samepairs[count,2] = newCombined[i,2]
+    samepairs[count,3] = newCombined[i,3]
+    samepairs[count,4] = i
+    count = count +1
+  }
+}
+
+for (i in 1:6903) {
+  if ((newCombined[i,2] == "v101_sans_exons.seq" & newCombined[i,3] == "v70_sans_exons.seq") | (newCombined[i,3] == "v101_sans_exons.seq")) {
+    indexpair = i
+  }
+}
+
+for (i in 1:6903) {
+  if ((newCombined[i,2] == "v16_sans_exons.seq" & newCombined[i,3] == "v91_sans_exons.seq") | (newCombined[i,3] == "v16_sans_exons.seq")) {
+    indexpair = i
+  }
+}
+
+for (i in 1:6903) {
+  if ((newCombined[i,2] == "v45_sans_exons.seq" & newCombined[i,3] == "v96_sans_exons.seq") | (newCombined[i,3] == "v45_sans_exons.seq")) {
+    indexpair = i
+  }
+}
+
+
+for (j in 1:587) {
+  if (matchesCOMBO[j,1] == 5189 | matchesCOMBO[j,2] == 5189) {
+    found = TRUE
+    nindex = j
+  }
+}
+
+#add 1 if matchecombo is result of v101 v 71 match
+for (v in 1:233) {
+  index = samepairs[v,4]
+  for (c in 1:587) {
+    if (matchesCOMBO[c,1] == index | matchesCOMBO[c,2] == index) {
+      matchesCOMBO2[c,3]= 1
+    }
+  }
+} 
+
+#pair dataframe for v16 and v91
+samepairs1691 = data.frame()
+count = 1
+for (i in 1:6903) {
+  if (newCombined[i,2] == "v16_sans_exons.seq" | newCombined[i,3] == "v16_sans_exons.seq" | newCombined[i,3] == "v91_sans_exons.seq" | newCombined[i,2] == "v91_sans_exons.seq") {
+    samepairs1691[count,1] = newCombined[i,1]
+    samepairs1691[count,2] = newCombined[i,2]
+    samepairs1691[count,3] = newCombined[i,3]
+    samepairs1691[count,4] = i
+    count = count +1
+  }
+}
+
+for (v in 1:233) {
+  index = samepairs1691[v,4]
+  for (c in 1:587) {
+    if (matchesCOMBO[c,1] == index | matchesCOMBO[c,2] == index) {
+      matchesCOMBO2[c,3]= 2
+    }
+  }
+} 
+
+
+#pair dataframe for v45 and v96
+samepairs4596 = data.frame()
+count = 1
+for (i in 1:6903) {
+  if (newCombined[i,2] == "v45_sans_exons.seq" | newCombined[i,3] == "v45_sans_exons.seq" | newCombined[i,3] == "v96_sans_exons.seq" | newCombined[i,2] == "v96_sans_exons.seq") {
+    samepairs4596[count,1] = newCombined[i,1]
+    samepairs4596[count,2] = newCombined[i,2]
+    samepairs4596[count,3] = newCombined[i,3]
+    samepairs4596[count,4] = i
+    count = count +1
+  }
+}
+
+for (v in 1:233) {
+  index = samepairs1691[v,4]
+  for (c in 1:587) {
+    if (matchesCOMBO[c,1] == index | matchesCOMBO[c,2] == index) {
+      matchesCOMBO2[c,3]= 3
+    }
+  }
+}
+
+count= 1
+problems = data.frame()
+for (e in (1:587)) {
+  if (is.na(matchesCOMBO2[e,3])) {
+    problems[count,1] = matchesCOMBO2[e,1]
+    problems[count,2] = matchesCOMBO2[e,2]
+    count = 1+ count
+  }
+}
+newCombined[10,1:3]
+newCombined[11,1:3]
+
+#kdr2
+a = seq[11,3]
+#his1
+b =seq[1,3]
+
+#kdr3
+c =seq[12,3]
+
+g = pairwiseAlignment(a,b)
+writePairwiseAlignments(g)
+
+k = pairwiseAlignment(a,b, type="local")
+writePairwiseAlignments(k)
+str(k)
+k@pattern@range@start
+
+for  
+if (k@subject@range@start != 1) {
+  
+}
+
+
+
+
 
