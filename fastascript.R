@@ -416,16 +416,31 @@ c =seq[12,3]
 g = pairwiseAlignment(a,b)
 writePairwiseAlignments(g)
 
+
 k = pairwiseAlignment(a,b, type="local")
 writePairwiseAlignments(k)
 str(k)
 k@pattern@range@start
+k@subject@range@start
 
-for  
-if (k@subject@range@start != 1) {
+k = pairwiseAlignment(b,a, type="local")
+writePairwiseAlignments(k)
+str(k)
+k@pattern@range@start
+k@subject@range@start
+
+
+for (x in 1:329) {
   
+longstartindex = k@pattern@range@start
+shortstartindex = k@subject@range@start
+if (min(k@pattern@range@start,k@subject@range@start) != 1) {
+    longstartindex = k@subject@range@start - (k@pattern@range@start-1) 
+    if (k@pattern@range@start > k@subject@range@start) {
+      longstartindex = k@pattern@range@start - (k@subject@range@start-1) 
+    }
 }
-
+}
 
 
 
