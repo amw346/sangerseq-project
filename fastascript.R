@@ -428,10 +428,15 @@ writePairwiseAlignments(k)
 str(k)
 k@pattern@range@start
 k@subject@range@start
+newCombined[18,2:3]
 
 
 for (x in 1:329) {
-  
+pair1 = problems[x,1]
+seq11= 
+seq12 = 
+pair2 = problems[x,2]
+k = pairwiseAlignment(a,b, type="local")  
 longstartindex = k@pattern@range@start
 shortstartindex = k@subject@range@start
 if (min(k@pattern@range@start,k@subject@range@start) != 1) {
@@ -442,6 +447,128 @@ if (min(k@pattern@range@start,k@subject@range@start) != 1) {
 }
 }
 
+#REDO with no aliignment gap problem
+
+#kdr2
+a = seq[11,3]
+#his1
+b =seq[1,3]
+
+#kdr3
+c =seq[12,3]
+
+g = pairwiseAlignment(a,b)
+writePairwiseAlignments(g)
+
+
+k = pairwiseAlignment(a,b, type="local")
+writePairwiseAlignments(k)
+
+
+#Code to generate the matrix of added pairwise combinations
+newCombinedNoGap = data.frame() 
+count = 1
+#two loops to make ((n-1)*n)/2 pairwise comparisons
+for (d in 1:117) { 
+  y = 118-d 
+  for (i in 1:y) { 
+    
+    #initialize two sequences
+    seq1 = seq[d,3]
+    name = seq[d,2]
+  
+    seq2 = seq[i+d,3] 
+    name2 = seq[i+d,2]
+    
+    #alligning them
+    allign = pairwiseAlignment(seq1,seq2,type = "local")
+    
+    indexseq1 = allign@pattern@range@start
+    indexseq2 = allign@subject@range@start
+  
+    #define cutseq1 boolean
+    #cutseq1 = TRUE means the first sequence inputted into pairwiseAllign needs to be cut
+  
+    if  (min(indexseq1, indexseq2) !=1) {
+      longstartindex = indexseq1 - (indexseq2-1) 
+      seq2islong = FALSE
+      if (indexseq2 > indexseq1) {
+        seq2islong = TRUE
+        longstartindex = indexseq2 - (indexseq1-1) 
+      }
+  
+   if (seq2islong) {
+     len = nchar(seq2)
+     seq2cut = substr(seq2,longstartindex,len)
+     seq1cut = seq1
+   } else {
+     len = nchar(seq1)
+     seq1cut = substr(seq1,longstartindex,len)
+     seq2cut = seq2
+   }} else {
+     if (indexseq2 > indexseq1) {
+       len = nchar(seq2)
+       seq2cut = substr(seq2,indexseq2,len) 
+       seq1cut= seq1
+     } else {
+       len = nchar(seq1)
+       seq1cut = substr(seq1,indexseq1,len) 
+       seq2cut= seq2
+     }
+   }
+    
+    len1 = nchar(seq1cut)
+    len2= nchar(seq2cut)
+    length = min(len1,len2)
+    
+    combo = "" 
+    for (i in 1:length) { 
+      newchar = addbases(substr(seq1cut,i,i), substr(seq2cut,i,i)) 
+      combo= paste0(combo, newchar) 
+    } 
+    
+    newCombinedNoGap[count,1] = combo
+    newCombinedNoGap[count,2] = name
+    newCombinedNoGap[count,3] = name2
+    newCombinedNoGap[count,4] = seq1
+    newCombinedNoGap[count,5] = seq2
+    count = count +1
+  } 
+}
+
+#CORRECTED ADDSEQ
+addseq <- function(seq1,seq2, index, cutSeq1) { 
+  #input is two string sequences of DNA, an index integer where alligning should start and a boolean cutseq1 indicating which sequence to cut
+  #cutseq1 = TRUE means seq1 should be cut
+  #output is a combined sequence starting at index 
+  
+  short = seq1 
+  long = seq2 
+  if (cutSeq1) { 
+    short = seq2 
+    long = seq1 
+  } 
+  len = nchar(long) 
+  #cut long string 
+  newlong = substr(long,index,len) 
+  
+  lenlong = nchar(newlong) 
+  lenshort = nchar(short) 
+  length = lenlong 
+  if (lenlong > lenshort) { 
+    length = lenshort 
+  } 
+  
+  #adding the elements 
+  combined = "" 
+  for (i in 1:length) { 
+    newchar = addbases(substr(short,i,i), substr(newlong,i,i)) 
+    combined= paste0(combined, newchar) 
+  } 
+  
+  #returning the added sequence 
+  return (combined) 
+}
 
 
 
