@@ -465,8 +465,8 @@ k = pairwiseAlignment(a,b, type="local")
 writePairwiseAlignments(k)
 
 
-#Code to generate the matrix of added pairwise combinations
-newCombinedNoGap = data.frame() 
+#Code to generate the matrix of added pairwise combinations with allignment problem fixed
+newCombinedNoGaptest = data.frame() 
 count = 1
 #two loops to make ((n-1)*n)/2 pairwise comparisons
 for (d in 1:117) { 
@@ -482,41 +482,47 @@ for (d in 1:117) {
     
     #alligning them
     allign = pairwiseAlignment(seq1,seq2,type = "local")
-    
+    writePairwiseAlignments(allign)
+    #get two start indexes
     indexseq1 = allign@pattern@range@start
     indexseq2 = allign@subject@range@start
   
-    #define cutseq1 boolean
-    #cutseq1 = TRUE means the first sequence inputted into pairwiseAllign needs to be cut
-  
+    
+    #in event neither seq starts from 1, find new start index for the long strand  
     if  (min(indexseq1, indexseq2) !=1) {
-      longstartindex = indexseq1 - (indexseq2-1) 
+      #assume seq1 is longer and find start index for seq1
       seq2islong = FALSE
+      longstartindex = indexseq1 - (indexseq2-1) 
+      #check if seq2 is actually longer and change index if necessary
       if (indexseq2 > indexseq1) {
         seq2islong = TRUE
         longstartindex = indexseq2 - (indexseq1-1) 
       }
-  
-   if (seq2islong) {
-     len = nchar(seq2)
-     seq2cut = substr(seq2,longstartindex,len)
-     seq1cut = seq1
-   } else {
-     len = nchar(seq1)
-     seq1cut = substr(seq1,longstartindex,len)
-     seq2cut = seq2
+      #cut beginning of sequences
+      if (seq2islong) {
+        len = nchar(seq2)
+        seq2cut = substr(seq2,longstartindex,len)
+        seq1cut = seq1
+      } else {
+        len = nchar(seq1)
+        seq1cut = substr(seq1,longstartindex,len)
+        seq2cut = seq2
+        
+  #otherwise either 1 starts from 1 or they both do
    }} else {
+     #if seq2 is longer cut beginning of seq2
      if (indexseq2 > indexseq1) {
        len = nchar(seq2)
        seq2cut = substr(seq2,indexseq2,len) 
        seq1cut= seq1
+     #if seq1 is longer or both starting at one
      } else {
        len = nchar(seq1)
        seq1cut = substr(seq1,indexseq1,len) 
        seq2cut= seq2
      }
    }
-    
+  
     len1 = nchar(seq1cut)
     len2= nchar(seq2cut)
     length = min(len1,len2)
@@ -527,48 +533,57 @@ for (d in 1:117) {
       combo= paste0(combo, newchar) 
     } 
     
-    newCombinedNoGap[count,1] = combo
-    newCombinedNoGap[count,2] = name
-    newCombinedNoGap[count,3] = name2
-    newCombinedNoGap[count,4] = seq1
-    newCombinedNoGap[count,5] = seq2
+    newCombinedNoGaptest[count,1] = combo
+    newCombinedNoGaptest[count,2] = name
+    newCombinedNoGaptest[count,3] = name2
+    newCombinedNoGaptest[count,4] = seq1
+    newCombinedNoGaptest[count,5] = seq2
     count = count +1
   } 
 }
 
-#CORRECTED ADDSEQ
-addseq <- function(seq1,seq2, index, cutSeq1) { 
-  #input is two string sequences of DNA, an index integer where alligning should start and a boolean cutseq1 indicating which sequence to cut
-  #cutseq1 = TRUE means seq1 should be cut
-  #output is a combined sequence starting at index 
-  
-  short = seq1 
-  long = seq2 
-  if (cutSeq1) { 
-    short = seq2 
-    long = seq1 
-  } 
-  len = nchar(long) 
-  #cut long string 
-  newlong = substr(long,index,len) 
-  
-  lenlong = nchar(newlong) 
-  lenshort = nchar(short) 
-  length = lenlong 
-  if (lenlong > lenshort) { 
-    length = lenshort 
-  } 
-  
-  #adding the elements 
-  combined = "" 
-  for (i in 1:length) { 
-    newchar = addbases(substr(short,i,i), substr(newlong,i,i)) 
-    combined= paste0(combined, newchar) 
-  } 
-  
-  #returning the added sequence 
-  return (combined) 
-}
+#Code to generate dataframe of exact matches
+#how many matches match because of concidence gives index in newCombined
+library(stringi)
+count = 1
+matchesCOMBONoGap = data.frame()
+for (d in 1:6903) { 
+  y = 6903-d 
+  for (i in 1:y) { 
+    
+    #initialize two sequences
+    seqcombo1 = newCombinedNoGap[d,1]
+    name = d 
+    seqcombo2 = newCombinedNoGap[i+d,1] 
+    name2 = i+d
+    if (stri_detect_fixed(seqcombo1,seqcombo2, case_insensitive = TRUE) & stri_detect_fixed(seqcombo2,seqcombo1, case_insensitive = TRUE)) {
+      matchesCOMBONoGap[count, 1] = name
+      matchesCOMBONoGap[count, 2] = newCombinedNoGap[d,2]
+      matchesCOMBONoGap[count, 3] = newCombinedNoGap[d,3]
+      matchesCOMBONoGap[count, 4] = newCombinedNoGap[d,4]
+      matchesCOMBONoGap[count, 5] = newCombinedNoGap[d,5]
+      matchesCOMBONoGap[count,6] = name2
+      matchesCOMBONoGap[count, 7] = newCombinedNoGap[i+d,2]
+      matchesCOMBONoGap[count, 8] = newCombinedNoGap[i+d,3]
+      matchesCOMBONoGap[count, 9] = newCombinedNoGap[i+d,4]
+      matchesCOMBONoGap[count, 10] = newCombinedNoGap[i+d,5]
+      count = count+1
+      print(d)
+    }
+    
+  }}
 
+#testing above two
+f = seq[1,3]
+g = seq[11,3]
 
+v = pairwiseAlignment(f,g,type = "local")
+writePairwiseAlignments(v)
+newCombinedNoGap[10,1]
+substr(g,143,270)
+
+f = seq[1,3]
+d = seq[15,3]
+j = pairwiseAlignment(f,d,type = "local")
+writePairwiseAlignments(j)
 
