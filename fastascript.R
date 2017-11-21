@@ -587,3 +587,112 @@ d = seq[15,3]
 j = pairwiseAlignment(f,d,type = "local")
 writePairwiseAlignments(j)
 
+#code to locate which ones are matching as a result of adding identical sequence pairs (ie v101 and v70) to the same sequence
+#if you rerun this code because workspace is lost just change the 14 to 11 there is no overlap bewtten matches, 116 exist for all three
+matchesCOMBONoGap2 = matchesCOMBONoGap
+
+#pairs for v45 and v96
+count = 1
+for (i in 1:505) {
+  sit1 = (matchesCOMBONoGap[i,2] == "v45_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v96_sans_exons.seq")
+  sit2 = (matchesCOMBONoGap[i,2] == "v45_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v96_sans_exons.seq")
+  sit3 = (matchesCOMBONoGap[i,3] == "v45_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v96_sans_exons.seq")
+  sit4 = (matchesCOMBONoGap[i,3] == "v45_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v96_sans_exons.seq")
+  
+  sit5 = (matchesCOMBONoGap[i,2] == "v96_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v45_sans_exons.seq")
+  sit6 = (matchesCOMBONoGap[i,2] == "v96_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v45_sans_exons.seq")
+  sit7 = (matchesCOMBONoGap[i,3] == "v96_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v45_sans_exons.seq")
+  sit8 = (matchesCOMBONoGap[i,3] == "v96_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v45_sans_exons.seq")
+  if (sit1 | sit2 | sit3 | sit4 | sit5 | sit6 | sit7 | sit8) {
+    matchesCOMBONoGap2[i,14] = 1
+    count = count +1
+  }
+}
+
+#pairs for v101 and v70
+count2 = 0
+for (i in 1:505) {
+  sit1 = (matchesCOMBONoGap[i,2] == "v101_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v70_sans_exons.seq")
+  sit2 = (matchesCOMBONoGap[i,2] == "v101_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v70_sans_exons.seq")
+  sit3 = (matchesCOMBONoGap[i,3] == "v101_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v70_sans_exons.seq")
+  sit4 = (matchesCOMBONoGap[i,3] == "v101_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v70_sans_exons.seq")
+  
+  sit5 = (matchesCOMBONoGap[i,2] == "v70_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v101_sans_exons.seq")
+  sit6 = (matchesCOMBONoGap[i,2] == "v70_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v101_sans_exons.seq")
+  sit7 = (matchesCOMBONoGap[i,3] == "v70_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v101_sans_exons.seq")
+  sit8 = (matchesCOMBONoGap[i,3] == "v70_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v101_sans_exons.seq")
+  if (sit1 | sit2 | sit3 | sit4 | sit5 | sit6 | sit7 | sit8) {
+    matchesCOMBONoGap2[i,14] = 1
+    count2 = count2 +1
+  }
+}
+
+#pairs for v16 and v91
+count3 = 0
+for (i in 1:505) {
+  sit1 = (matchesCOMBONoGap[i,2] == "v16_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v91_sans_exons.seq")
+  sit2 = (matchesCOMBONoGap[i,2] == "v16_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v91_sans_exons.seq")
+  sit3 = (matchesCOMBONoGap[i,3] == "v16_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v91_sans_exons.seq")
+  sit4 = (matchesCOMBONoGap[i,3] == "v16_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v91_sans_exons.seq")
+  
+  sit5 = (matchesCOMBONoGap[i,2] == "v91_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v16_sans_exons.seq")
+  sit6 = (matchesCOMBONoGap[i,2] == "v91_sans_exons.seq") & (matchesCOMBONoGap[i,3] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v16_sans_exons.seq")
+  sit7 = (matchesCOMBONoGap[i,3] == "v91_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,7]) & (matchesCOMBONoGap[i,8] == "v16_sans_exons.seq")
+  sit8 = (matchesCOMBONoGap[i,3] == "v91_sans_exons.seq") & (matchesCOMBONoGap[i,2] == matchesCOMBONoGap[i,8]) & (matchesCOMBONoGap[i,7] == "v16_sans_exons.seq")
+  if (sit1 | sit2 | sit3 | sit4 | sit5 | sit6 | sit7 | sit8) {
+    matchesCOMBONoGap2[i,14] = 1
+    count3 = count3 +1
+  }
+}
+
+#leftover problem dataset
+#problems2 contains 
+problems2 = data.frame()
+count4 = 1
+for (i in 1:505) {
+  if (is.na(matchesCOMBONoGap2[i,14])) {
+    problems2[count4,1]=  matchesCOMBONoGap2[i,2]
+    problems2[count4,2]=  matchesCOMBONoGap2[i,3]
+    problems2[count4,3]=  matchesCOMBONoGap2[i,7]
+    problems2[count4,4]=  matchesCOMBONoGap2[i,8]
+    problems2[count4,5]= i
+    count4 = count4+1
+  }
+}
+
+#code to look at what is happening with problems2
+problemCompare <- function(index) {
+  #index is for matchesCOMBoNoGap2 problems
+  seq1 = matchesCOMBONoGap2[index,4]
+  seq2 = matchesCOMBONoGap2[index,5]
+  
+  newcombinedindex = matchesCOMBONoGap2[index,1]
+  
+  print(seq1)
+  print(seq2)
+  allign1 = pairwiseAlignment(seq1,seq2,type = "local")
+ 
+  print("second match")
+  seq3 = matchesCOMBONoGap2[index,9]
+  seq4 = matchesCOMBONoGap2[index,10]
+  
+  print(seq3)
+  print(seq4)
+  allign2 = pairwiseAlignment(seq3,seq4,type = "local")
+  
+  writePairwiseAlignments(allign1)
+  writePairwiseAlignments(allign2)
+  print(newCombinedNoGap[newcombinedindex,1])
+  
+}
+
+#usign the function to test
+problemCompare(1)
+c =pairwiseAlignment(seq2,seq4)
+writePairwiseAlignments(c)
+# index =1 example of different seq added to same seq but starting after difference occurs
+
+
+problemCompare(4)
+
+
