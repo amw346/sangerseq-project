@@ -692,7 +692,15 @@ c =pairwiseAlignment(seq2,seq4)
 writePairwiseAlignments(c)
 # index =1 example of different seq added to same seq but starting after difference occurs
 
-
 problemCompare(4)
+# index = 4 example of adding a and g in one and g and a in the other so is 5
+r= matchesCOMBONoGap2[4,4]
+t = matchesCOMBONoGap2[4,9]
 
+m= matchesCOMBONoGap2[4,5]
+n = matchesCOMBONoGap2[4,10]
 
+g=pairwiseAlignment(r,m, type="local")
+writePairwiseAlignments(g)
+
+problemCompare(7)
