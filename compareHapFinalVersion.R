@@ -14,12 +14,12 @@ compareHap<- function(file, master) {
   cutpri = substr(pri,20,index)
   cutsec = substr(sec,20,index)
   combined = addPriSec2(cutpri,cutsec)
-  match = checkMasterList(combined,master)
+  match = MODcheckMasterList4(combined,master)
   return (match)
 }
 
 compareHap("C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1",TESTcombinedtypes)
-compareHap(file,)
+compareHap(file, newCombinedNoGap)
 
 
 
@@ -36,7 +36,7 @@ clipIndex <- function(sangob) {
     if (found) { 
       return(num-2) 
     } 
-    if ((c1 == "N") & c2 == "N" & c3 == "N") { 
+    if ((c1 == "N") & (c2 == "N") & (c3 == "N")) { 
       found = TRUE 
     } 
     num = i +1 
@@ -49,9 +49,12 @@ MODcheckMasterList4<- function(newseq, master) {
   matchesList = data.frame()
   len = dim(master)[1]
   count = 1
-  for (i in 1:6903) {
+  for (i in 3000:4100) {
     found = FALSE
-    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE))
+    overlap1 = overlapIsTrue(newseq,master[i,1])
+    overlap2 = overlapIsTrue(master[i,1],newseq)
+    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE) | overlap1 | overlap2)
+    print(i)
     if (found == TRUE) {
       matchesList[count,1]= master[i,1]
       matchesList[count,2]= master[i,2]
@@ -86,7 +89,7 @@ addPriSeq2 <- function(pri,sec) {
   return (AddedSeq = combined)
 }
 
-
+#add bases for capital letters
 addbases2<- function(a,b) {
   #addbases inputs two single character strings and outputs a single letter string according to IUPAC codes
   if (a == "A") {
@@ -144,3 +147,111 @@ addbases2<- function(a,b) {
   if (a == "N") {return("N")}
   return ("input strings not valid")	
 }
+
+#add bases for lowercase situation
+addbases1<- function(a,b) {
+  #addbases inputs two single character strings and outputs a single letter string according to IUPAC codes
+  if (a == "a") {
+    if (b == "a") {return ("A")}
+    if (b == "c") {return ("M")}
+    if (b == "g") {return ("R")}
+    if (b == "t") {return ("W")}
+    if (b == "n") {return ("N")}
+    if (b == "r") {return ("R")}
+    if (b == "y") {return ("H")}
+    if (b == "s") {return ("V")}
+    if (b == "w") {return ("W")}
+    if (b == "k") {return ("D")}
+    if (b == "m") {return ("M")}
+  }
+  if (a == "c") {
+    if (b == "a") {return ("M")}
+    if (b == "c") {return ("C")}
+    if (b == "g") {return ("S")}
+    if (b == "t") {return ("Y")}
+    if (b == "n") {return ("N")}
+    if (b == "r") {return ("V")}
+    if (b == "y") {return ("Y")}
+    if (b == "s") {return ("S")}
+    if (b == "w") {return ("H")}
+    if (b == "k") {return ("B")}
+    if (b == "m") {return ("M")}
+  }
+  if (a == "g") {
+    if (b == "a") {return ("R")}
+    if (b == "c") {return ("S")}
+    if (b == "g") {return ("G")}
+    if (b == "t") {return ("K")}
+    if (b == "n") {return ("N")}
+    if (b == "r") {return ("R")}
+    if (b == "y") {return ("B")}
+    if (b == "s") {return ("S")}
+    if (b == "w") {return ("D")}
+    if (b == "k") {return ("K")}
+    if (b == "m") {return ("V")}
+  }
+  if (a == "t") {
+    if (b == "a") {return ("W")}
+    if (b == "c") {return ("Y")}
+    if (b == "g") {return ("K")}
+    if (b == "t") {return ("T")}
+    if (b == "n") {return ("N")}
+    if (b == "r") {return ("D")}
+    if (b == "y") {return ("Y")}
+    if (b == "s") {return ("B")}
+    if (b == "w") {return ("W")}
+    if (b == "k") {return ("K")}
+    if (b == "m") {return ("H")}
+  }
+  if (a == "n") {return("N")}
+  return ("input strings not valid")	
+}
+
+file1="C:/Users/amw346/Desktop/aa.ab1"
+aabysseq <- readsangerseq(file1)
+abseq = "ATCCGACTTCAGCACAGCTTCATGATTGTGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCATGTGGGACTGCATGTATGTGGGCGATGTCAGCTGTATACCCTTCTTCTTGGCCACGGTCGTGATCGGCAATCTTGTGGTAAGTTGACGTGGCCGAAACTGCTCYCCCGCTCCCAGGATGGAGGCTTCWKMYGKMMWATWMAAAAAWWWKWMAWTYAWCYYYYYYYTTYYCYCYYCYMWCTYWAYTYTMTYCMCWGYWKCMKKTKCWTRWTCTTWWYYTWKYYTTRCYTTTGYYYWWSTYCRRYTCMTSTASWTYWWCWKYMYCRACYSCCRAYRMYGAYAMYRATACCAA"
+v2v3combo=  "CTTGTGGTAAGTTGACGTGGCCGAAACTGCTCYCCCGCTCCCAGGATGGAGGCTTCWKMYGKMMWATWMAAAAAWWWKWMAWTYAWCYYYYYYYTTYYYYYYYCYMWCTYWAYTYTMTYCMSWSYWKCMK"
+v= pairwiseAlignment(abseq,v2v3combo)
+writePairwiseAlignments(v)
+
+v3v5combo = newCombinedNoGap[3999,1]
+v= pairwiseAlignment(abseq,v3v5combo)
+writePairwiseAlignments(v)
+
+inputseqaabys = combined
+
+v= pairwiseAlignment(inputseqaabys,v3v5combo)
+writePairwiseAlignments(v)
+
+v= pairwiseAlignment(inputseqaabys,v2v3combo)
+writePairwiseAlignments(v)
+
+found = (stri_detect_fixed(v3v5combo,inputseqaabys, case_insensitive = TRUE) |stri_detect_fixed(inputseqaabys, v3v5combo, case_insensitive = TRUE))
+
+(stri_detect_fixed(v2v3combo,inputseqaabys, case_insensitive = TRUE) |stri_detect_fixed(inputseqaabys, v2v3combo, case_insensitive = TRUE))
+
+k = newCombinedNoGap[4231,1]
+v= pairwiseAlignment(inputseqaabys,k)
+writePairwiseAlignments(v)
+
+overlapIsTrue <- function(combined, MScandidate) {
+  t=pairwiseAlignment(combined, MScandidate)
+  
+  MScanindex = t@subject@range@start
+  comboindex = t@pattern@range@start
+  cutcombined = substr(combined,comboindex,nchar(combined))
+  cutMScan = substr(MScandidate,1,nchar(combined)-comboindex+1)
+  if (cutcombined ==cutMScan ) {
+    return (TRUE)
+  }
+  return (FALSE)
+}
+
+overlapIsTrue(v3v5combo,inputseqaabys)
+overlapIsTrue(inputseqaabys, v3v5combo)
+
+combined = v3v5combo
+MScandidate=inputseqaabys
+c = substr(combined,comboindex,nchar(combined))
+nchar(combined)-comboindex +1
+nchar(combined)-28
