@@ -1,26 +1,32 @@
 #COMPARE A FILE TO THE MASTERLIST AND FIND POSSIBLE COMBOS
 library(stringi)
+
+#examples of how to use function and arguments
 file="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
-
 file="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
+compareHap(file, newCombinedNoGap)
 
+#warnings
 #addbases requires capital letters
+#you should run library(stringi)before hand otherwise stri_detect_fixed will throw error
+
 compareHap<- function(file, master) {
-  sangerobj <- readsangerseq(file)
-  index = clipIndex(sangerobj)
+  #inputs a chromatogram file and outputs the list of matches with the master list and the sequence that was a match
+  sangerobj <- readsangerseq(file) #read in file
+  index = clipIndex(sangerobj) #cut off all Ns at the end
+  
+  #cut and add combined string
   basecalls <- makeBaseCalls(sangerobj)
   pri <- primarySeq(basecalls, string = 'TRUE')
   sec <- secondarySeq(basecalls, string = 'TRUE')
-  cutpri = substr(pri,20,index)
+  cutpri = substr(pri,20,index) 
   cutsec = substr(sec,20,index)
   combined = addPriSec2(cutpri,cutsec)
+  
+  #look for matches within the master list supplied to function
   match = MODcheckMasterList4(combined,master)
   return (match)
 }
-
-compareHap("C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1",TESTcombinedtypes)
-compareHap(file, newCombinedNoGap)
-
 
 
 #HELPER FUNCTIONS FOR REFERENCE
@@ -51,9 +57,9 @@ MODcheckMasterList4<- function(newseq, master) {
   count = 1
   for (i in 3000:4100) {
     found = FALSE
-    overlap1 = overlapIsTrue(newseq,master[i,1])
-    overlap2 = overlapIsTrue(master[i,1],newseq)
-    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE) | overlap1 | overlap2)
+    overlap = overlapIsTrue(newseq,master[i,1])
+ 
+    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE) | overlap )
     print(i)
     if (found == TRUE) {
       matchesList[count,1]= master[i,1]
@@ -207,6 +213,43 @@ addbases1<- function(a,b) {
   return ("input strings not valid")	
 }
 
+overlapIsTrue <- function(long, short) {
+  #function inputs two strings and checks to see if they have a matching overlapping portion
+  #returns true if match is found
+  
+  t = pairwiseAlignment(long, short) # align strings to see where they overlap
+  writePairwiseAlignments(t)
+  
+  shortindex = t@subject@range@start
+  longindex = t@pattern@range@start
+  
+  if (shortindex < longindex) {
+    cutshort = substr(short,1,nchar(long)-longindex +1)
+    cutlong = substr(long,longindex, nchar(long))
+  } 
+  if (longindex == shortindex) {
+    if (nchar(long)> nchar(short)) {
+      cutshort = substr(short,1,nchar(short))
+      cutlong = substr(long,1, nchar(short))
+    } else {
+      cutshort = substr(short,1,nchar(long))
+      cutlong = substr(long,1, nchar(long))
+    }
+  }
+  if (longindex < shortindex) {
+    cutshort = substr(short,shortindex,nchar(short))
+    cutlong = substr(long,1,nchar(short)-shortindex+1)
+  }
+  if (cutlong ==cutshort) {
+    return (TRUE)
+  }
+  return (FALSE)
+}
+
+
+
+
+#Code used to test the functions above
 file1="C:/Users/amw346/Desktop/aa.ab1"
 aabysseq <- readsangerseq(file1)
 abseq = "ATCCGACTTCAGCACAGCTTCATGATTGTGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCATGTGGGACTGCATGTATGTGGGCGATGTCAGCTGTATACCCTTCTTCTTGGCCACGGTCGTGATCGGCAATCTTGTGGTAAGTTGACGTGGCCGAAACTGCTCYCCCGCTCCCAGGATGGAGGCTTCWKMYGKMMWATWMAAAAAWWWKWMAWTYAWCYYYYYYYTTYYCYCYYCYMWCTYWAYTYTMTYCMCWGYWKCMKKTKCWTRWTCTTWWYYTWKYYTTRCYTTTGYYYWWSTYCRRYTCMTSTASWTYWWCWKYMYCRACYSCCRAYRMYGAYAMYRATACCAA"
@@ -226,30 +269,31 @@ writePairwiseAlignments(v)
 v= pairwiseAlignment(inputseqaabys,v2v3combo)
 writePairwiseAlignments(v)
 
-found = (stri_detect_fixed(v3v5combo,inputseqaabys, case_insensitive = TRUE) |stri_detect_fixed(inputseqaabys, v3v5combo, case_insensitive = TRUE))
 
-(stri_detect_fixed(v2v3combo,inputseqaabys, case_insensitive = TRUE) |stri_detect_fixed(inputseqaabys, v2v3combo, case_insensitive = TRUE))
 
 k = newCombinedNoGap[4231,1]
 v= pairwiseAlignment(inputseqaabys,k)
 writePairwiseAlignments(v)
+t=pairwiseAlignment(inputseqaabys, v3v5combo)
+writePairwiseAlignments(t)
 
-overlapIsTrue <- function(combined, MScandidate) {
-  t=pairwiseAlignment(combined, MScandidate)
-  
-  MScanindex = t@subject@range@start
-  comboindex = t@pattern@range@start
-  cutcombined = substr(combined,comboindex,nchar(combined))
-  cutMScan = substr(MScandidate,1,nchar(combined)-comboindex+1)
-  if (cutcombined ==cutMScan ) {
-    return (TRUE)
-  }
-  return (FALSE)
-}
 
-overlapIsTrue(v3v5combo,inputseqaabys)
+
+
+v = "ATCCGACTTCAGCACAGCTTCATGATTGTGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCATGT"
+c = "ATCCGACTTCAGCACAGCTTCATGATTGTGTTCC"
+t=pairwiseAlignment(v,c)
+writePairwiseAlignments(t)
+
+overlapIsTrue(v,c)
 overlapIsTrue(inputseqaabys, v3v5combo)
+overlapIsTrue(v3v5combo,inputseqaabys)
+long = v3v5combo
+short = inputseqaabys
 
+
+long = inputseqaabys
+short = v3v5combo
 combined = v3v5combo
 MScandidate=inputseqaabys
 c = substr(combined,comboindex,nchar(combined))
