@@ -50,8 +50,30 @@ clipIndex <- function(sangob) {
   return (num-2)
 }
 
-
 MODcheckMasterList4<- function(newseq, master) {
+  matchesList = data.frame()
+  len = dim(master)[1]
+  count = 1
+  for (i in 1:len) {
+    found = FALSE
+    overlap = overlapIsTrue(newseq,master[i,1])
+ 
+    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE) | overlap )
+    print(i)
+    if (found == TRUE) {
+      matchesList[count,1]= master[i,1]
+      matchesList[count,2]= master[i,2]
+      matchesList[count,3]= master[i,3]
+      count = 1+count
+   
+    
+    }
+  }
+  
+  return(matchesList)
+}
+
+MODcheckMasterList5<- function(newseq, master) {
   matchesList = data.frame()
   len = dim(master)[1]
   count = 1
