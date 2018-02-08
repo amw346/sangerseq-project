@@ -11,13 +11,18 @@ b = newCombinedNoGap[9,1]
 a=combined
 x=pairwiseAlignment(a,b)
 writePairwiseAlignments(x)
-174, 181, 189 on chromatogram
+#174, 181, 189 on chromatogram
 
-
-#2FLF1 KDR2/V39
+#ERROR
+#1FLF2 V20/KDR4
 file2="C:/Users/amw346/Desktop/1FLF2kdr1.ab1"
 compareHap(file2, newCombinedNoGap)
+g =combined
+b = newCombinedNoGap[1357,1]
+z=pairwiseAlignment(g,b)
+writePairwiseAlignments(z)
 
+#
 
 
 
