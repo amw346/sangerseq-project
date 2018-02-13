@@ -39,27 +39,63 @@ z=pairwiseAlignment(combined5,newCombinedNoGap[53,1])
 writePairwiseAlignments(z)
 #205 A vs W
 
-WTF(file5,53)
-WTF <- function(file,index) {
-  sangerobj <- readsangerseq(file) #read in file
+
+testMatch <- function(file,indexmain) {
+  sangerobj <- readsangerseq(file8) #read in file
   index = clipIndex(sangerobj) #cut off all Ns at the end
   
   #cut and add combined string
-  basecalls <- makeBaseCalls(sangerobj)
+  basecalls <- makeBaseCalls(sangerobj, ratio = 0.1)
   pri <- primarySeq(basecalls, string = 'TRUE')
   sec <- secondarySeq(basecalls, string = 'TRUE')
   cutpri = substr(pri,20,index) 
   cutsec = substr(sec,20,index)
   b = addPriSec2(cutpri,cutsec)
-  a = newCombinedNoGap[index,1]
-  a
-  b
+  a = newCombinedNoGap[indexmain,1]
+  print(a)
+  print(b)
   z = pairwiseAlignment(a,b)
   writePairwiseAlignments(z)
 }
 
+#
+file5="C:/Users/amw346/Desktop/1KSF1kdr.ab1"
+compareHap(file5, newCombinedNoGap)
+testMatch(file5, 1152)
+
+file6="C:/Users/amw346/Desktop/Batch 1/1KSF1kdr.ab1"
+testMatch(file6,1152)
+
+file7 = "C:/Users/amw346/Desktop/Batch 1/2KSF1kdr.ab1"
+#doont have answer testMatch(file7)
+
+file8 = "C:/Users/amw346/Desktop/Batch 1/3KSF1kdr.ab1"
+testMatch(file8,354)
+
+file9 = "C:/Users/amw346/Desktop/Batch 1/4KSF1kdr.ab1"
+testMatch(file9,1275)
+
+file10 = "C:/Users/amw346/Desktop/Batch 1/5KSF1kdr.ab1"
+testMatch(file10, 242)
+
+file11 = "C:/Users/amw346/Desktop/Batch 1/8KSF1kdr.ab1"
+testMatch(file11, 282)
+compareHap(file10,newCombinedNoGap)
+
+file12 = "C:/Users/amw346/Desktop/10KSF2kdr.ab1"
+testMatch(file12, 4279)
+
+file13 = "C:/Users/amw346/Desktop/Batch 1/11KSF1kdr.ab1"
+testMatch(file13, 1145)
+
+#test old file 
+file14 = "C:/Users/amw346/Desktop/aa.ab1"
+testMatch(file16,3999)
+
+file14="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
+file16="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
 
 
-
+compareHap(file16,newCombinedNoGap)
 
 
