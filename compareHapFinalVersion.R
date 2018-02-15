@@ -55,7 +55,7 @@ MODcheckMasterList4<- function(newseq, master) {
   matchesList = data.frame()
   len = dim(master)[1]
   count = 1
-  for (i in 3000:4500) {
+  for (i in 6903:7021) {
     found = FALSE
     overlap = overlapIsTrue(newseq,master[i,1])
  
@@ -298,3 +298,17 @@ MScandidate=inputseqaabys
 c = substr(combined,comboindex,nchar(combined))
 nchar(combined)-comboindex +1
 nchar(combined)-28
+
+
+#code to fix homozygous nonmatch problem
+newCombinedNoGapAllAdded = newCombinedNoGap
+for (i in 1:118) {
+  d = 6903 +i
+  capitalseq = toupper(seq[i,3])
+  newCombinedNoGapAllAdded[d,1]= capitalseq
+  newCombinedNoGapAllAdded[d,2]= seq[i,2]
+  newCombinedNoGapAllAdded[d,3]= seq[i,2]
+  newCombinedNoGapAllAdded[d,4]= seq[i,3]
+  newCombinedNoGapAllAdded[d,5]= seq[i,3]
+}
+
