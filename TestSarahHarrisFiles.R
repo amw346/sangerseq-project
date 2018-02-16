@@ -41,24 +41,24 @@ writePairwiseAlignments(z)
 
 
 testMatch <- function(file,indexmain) {
-  sangerobj <- readsangerseq(file8) #read in file
+  sangerobj <- readsangerseq(file) #read in file
   index = clipIndex(sangerobj) #cut off all Ns at the end
   
   #cut and add combined string
-  basecalls <- makeBaseCalls(sangerobj, ratio = 0.1)
+  basecalls <- makeBaseCalls(sangerobj)
   pri <- primarySeq(basecalls, string = 'TRUE')
   sec <- secondarySeq(basecalls, string = 'TRUE')
   cutpri = substr(pri,20,index) 
   cutsec = substr(sec,20,index)
   b = addPriSec2(cutpri,cutsec)
-  a = newCombinedNoGap[indexmain,1]
+  a = newCombinedNoGapAllAdded[indexmain,1]
   print(a)
   print(b)
   z = pairwiseAlignment(a,b)
   writePairwiseAlignments(z)
 }
 
-#
+#from kansas batch 1 folder
 file5="C:/Users/amw346/Desktop/1KSF1kdr.ab1"
 compareHap(file5, newCombinedNoGap)
 testMatch(file5, 1152)
@@ -88,14 +88,49 @@ testMatch(file12, 4279)
 file13 = "C:/Users/amw346/Desktop/Batch 1/11KSF1kdr.ab1"
 testMatch(file13, 1145)
 
-#test old file 
-file14 = "C:/Users/amw346/Desktop/aa.ab1"
+#test old file # v3v5 and
+file16="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1" 
 testMatch(file16,3999)
 
 file14="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
 file16="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
 
 
-compareHap(file16,newCombinedNoGap)
+compareHap(file14,newCombinedNoGapAllAdded)
+
+
+#fuzzymatrix test
+sangerobj <- readsangerseq(file16) #read in file
+index = clipIndex(sangerobj) #cut off all Ns at the end
+
+#cut and add combined string
+basecalls <- makeBaseCalls(sangerobj)
+pri <- primarySeq(basecalls, string = 'TRUE')
+sec <- secondarySeq(basecalls, string = 'TRUE')
+cutpri = substr(pri,20,index) 
+cutsec = substr(sec,20,index)
+b = addPriSec2(cutpri,cutsec)
+a = newCombinedNoGap[3999,1]
+d=pairwiseAlignment(b,a)
+writePairwiseAlignments(d)
+
+
+nmismatch(d)
+nmatch(d)
+mapping <- diag(4)
+dimnames(mapping) <- list(DNA_BASES, DNA_BASES)
+mapping["C", "T"] <- mapping["T", "C"] <- 1
+mapping["G", "A"] <- mapping["A", "G"] <- 1
+
+
+#ratio 1/3
+
+file6="C:/Users/amw346/Desktop/Batch 1/1KSF1kdr.ab1"
+#mod4 range: 1100-1200
+compareHap(file6, newCombinedNoGapAllAdded)
+testMatch(file6,1152)
+
+
+
 
 
