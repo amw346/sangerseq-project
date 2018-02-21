@@ -40,8 +40,8 @@ writePairwiseAlignments(z)
 #205 A vs W
 
 
-testMatch <- function(file,indexmain) {
-  sangerobj <- readsangerseq(file) #read in file
+testMatch <- function(file,indexmain=354) {
+  sangerobj <- readsangerseq(file8) #read in file
   index = clipIndex(sangerobj) #cut off all Ns at the end
   
   #cut and add combined string
@@ -57,7 +57,7 @@ testMatch <- function(file,indexmain) {
   z = pairwiseAlignment(a,b)
   writePairwiseAlignments(z)
 }
-
+nchar(b)
 #from kansas batch 1 folder
 file5="C:/Users/amw346/Desktop/1KSF1kdr.ab1"
 compareHap(file5, newCombinedNoGap)
@@ -123,14 +123,40 @@ mapping["C", "T"] <- mapping["T", "C"] <- 1
 mapping["G", "A"] <- mapping["A", "G"] <- 1
 
 
-#ratio 1/3
+#ratio 1/3 
 
+#testcase1
+#v26/kdr2
 file6="C:/Users/amw346/Desktop/Batch 1/1KSF1kdr.ab1"
 #mod4 range: 1100-1200
 compareHap(file6, newCombinedNoGapAllAdded)
+#0 rows 0 cols
 testMatch(file6,1152)
+#273 on chromatagram
 
+#testcase2
+#super-kdr2/superkdr3
+file8 = "C:/Users/amw346/Desktop/Batch 1/3KSF1kdr.ab1"
+#mod4range: 350-400
+compareHap(file8, newCombinedNoGapAllAdded)
+#0 rows 0 col
+testMatch(file8,354)
+#167, 181, 189
 
+#testcase3
+#v41/superkdr2
+file9 = "C:/Users/amw346/Desktop/Batch 1/4KSF1kdr.ab1"
+#mod4 range: 1200-1400
+compareHap(file9, newCombinedNoGapAllAdded)
+#match found 1275
+testMatch(file9,1275)
 
-
+#testcase4 
+#kdr-his3/super-kdr2
+file10 = "C:/Users/amw346/Desktop/Batch 1/5KSF1kdr.ab1"
+#mod4 range: 200-400
+compareHap(file10, newCombinedNoGapAllAdded)
+#0 rows 0 columns
+testMatch(file10, 242)
+#208
 
