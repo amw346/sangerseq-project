@@ -160,3 +160,33 @@ compareHap(file10, newCombinedNoGapAllAdded)
 testMatch(file10, 242)
 #208
 
+#testcase5
+#v39/ kdr-his3
+file11 = "C:/Users/amw346/Desktop/Batch 1/8KSF1kdr.ab1"
+#mod4: 250-300
+compareHap(file11, newCombinedNoGapAllAdded)
+#kdr-his3/v30 AND kdr-his3/v39
+testMatch(file11, 282)
+
+#testcase6
+#v33/v37
+file12 = "C:/Users/amw346/Desktop/10KSF2kdr.ab1"
+#mod4: 4200,4300
+compareHap(file12, newCombinedNoGapAllAdded)
+#0 rows 0 col
+testMatch(file12, 4279)
+#203
+
+#testcase7
+#super-kdr2/super-kdr2
+file13 = "C:/Users/amw346/Desktop/Batch 1/11KSF1.ab1"
+#mod4: 1140,1160
+compareHap(file13, newCombinedNoGapAllAdded)
+#0 row 0 col
+testMatch(file13, 1145)
+
+
+#0 rows 0 col
+testMatch(file12, 4279)
+#203
+
