@@ -41,7 +41,7 @@ writePairwiseAlignments(z)
 
 
 testMatch <- function(file,indexmain=354) {
-  sangerobj <- readsangerseq(file8) #read in file
+  sangerobj <- readsangerseq(file16) #read in file
   index = clipIndex(sangerobj) #cut off all Ns at the end
   
   #cut and add combined string
@@ -93,7 +93,7 @@ file16="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
 testMatch(file16,3999)
 
 file14="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
-file16="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
+#file16="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
 
 
 compareHap(file14,newCombinedNoGapAllAdded)
@@ -143,7 +143,7 @@ compareHap(file8, newCombinedNoGapAllAdded)
 testMatch(file8,354)
 #167, 181, 189
 
-#testcase3
+#testcase3 #match
 #v41/superkdr2
 file9 = "C:/Users/amw346/Desktop/Batch 1/4KSF1kdr.ab1"
 #mod4 range: 1200-1400
@@ -160,7 +160,7 @@ compareHap(file10, newCombinedNoGapAllAdded)
 testMatch(file10, 242)
 #208
 
-#testcase5
+#testcase5 #match
 #v39/ kdr-his3
 file11 = "C:/Users/amw346/Desktop/Batch 1/8KSF1kdr.ab1"
 #mod4: 250-300
@@ -177,16 +177,38 @@ compareHap(file12, newCombinedNoGapAllAdded)
 testMatch(file12, 4279)
 #203
 
-#testcase7
+#testcase7 #match
 #super-kdr2/super-kdr2
 file13 = "C:/Users/amw346/Desktop/Batch 1/11KSF1.ab1"
-#mod4: 1140,1160
+#mod4: 6903,7021
 compareHap(file13, newCombinedNoGapAllAdded)
-#0 row 0 col
-testMatch(file13, 1145)
+#super-kdr2/super-kdr2
+testMatch(file13, 6915)
 
+#testcase8 #match
+#v33/super-kdr2
+file14 = "C:/Users/amw346/Desktop/Batch 1/9KSF1kdr.ab1"
+#mod4: 1200,1300
+compareHap(file14, newCombinedNoGapAllAdded)
+#kdr3_(super-kdr2)/v102_sans_exons AND kdr3_(super-kdr2)/v33_sans_exons.seq
+testMatch(file14, 1240)
 
+#testcase9 #match
+#v39/kdr2
+file15 = "C:/Users/amw346/Desktop/Batch 1/12KSF1.ab1"
+#mod4: 1100,1200
+compareHap(file15, newCombinedNoGapAllAdded)
+#v30/kdr2 v39/kdr2
+testMatch(file15, 1166)
+
+#testcase10
+#kdr2/super-kdr2
+file16 = "C:/Users/amw346/Desktop/Batch 1/14KSF1.ab1"
+#mod4: 1, 6903
+compareHap(file16, newCombinedNoGapAllAdded)
 #0 rows 0 col
-testMatch(file12, 4279)
-#203
+testMatch(file16, 1126)
+newCombinedNoGapAllAdded[1126,1]
+
+
 
