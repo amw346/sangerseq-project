@@ -40,8 +40,8 @@ writePairwiseAlignments(z)
 #205 A vs W
 
 
-testMatch <- function(file,indexmain=354) {
-  sangerobj <- readsangerseq(file16) #read in file
+testMatch <- function(file,indexmain) {
+  sangerobj <- readsangerseq(file) #read in file
   index = clipIndex(sangerobj) #cut off all Ns at the end
   
   #cut and add combined string
@@ -124,6 +124,7 @@ mapping["G", "A"] <- mapping["A", "G"] <- 1
 
 
 #ratio 1/3 
+#pattern is on top
 
 #testcase1
 #v26/kdr2
@@ -133,6 +134,8 @@ compareHap(file6, newCombinedNoGapAllAdded)
 #0 rows 0 cols
 testMatch(file6,1152)
 #273 on chromatagram
+#rerun with mod4 range: 1-7022
+#kdr2/ v26 AND kdr6 v 26 1152 and 1570
 
 #testcase2
 #super-kdr2/superkdr3
@@ -142,6 +145,7 @@ compareHap(file8, newCombinedNoGapAllAdded)
 #0 rows 0 col
 testMatch(file8,354)
 #167, 181, 189
+#un all 7021 0 rows 0 col
 
 #testcase3 #match
 #v41/superkdr2
@@ -176,6 +180,8 @@ compareHap(file12, newCombinedNoGapAllAdded)
 #0 rows 0 col
 testMatch(file12, 4279)
 #203
+#all 7022
+#0 rows 0 col
 
 #testcase7 #match
 #super-kdr2/super-kdr2
@@ -184,6 +190,7 @@ file13 = "C:/Users/amw346/Desktop/Batch 1/11KSF1.ab1"
 compareHap(file13, newCombinedNoGapAllAdded)
 #super-kdr2/super-kdr2
 testMatch(file13, 6915)
+#0 rows 0 cols
 
 #testcase8 #match
 #v33/super-kdr2
@@ -209,6 +216,8 @@ compareHap(file16, newCombinedNoGapAllAdded)
 #0 rows 0 col
 testMatch(file16, 1126)
 newCombinedNoGapAllAdded[1126,1]
+#all 7022
+#o rows 0 cols
 
 
 
