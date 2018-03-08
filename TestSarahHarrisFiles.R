@@ -163,6 +163,7 @@ compareHap(file10, newCombinedNoGapAllAdded)
 #0 rows 0 columns
 testMatch(file10, 242)
 #208
+#all 7021 - 0 rows 0 col
 
 #testcase5 #match
 #v39/ kdr-his3
@@ -170,7 +171,7 @@ file11 = "C:/Users/amw346/Desktop/Batch 1/8KSF1kdr.ab1"
 #mod4: 250-300
 compareHap(file11, newCombinedNoGapAllAdded)
 #kdr-his3/v30 AND kdr-his3/v39
-testMatch(file11, 282)
+testMatch(file11, 282) 
 
 #testcase6
 #v33/v37
