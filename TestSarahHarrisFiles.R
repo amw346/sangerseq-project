@@ -2,7 +2,6 @@
 #compareHap function located in compareHapFinalVersion.R
 
 
-
 #1FLF1kdr1 kdr1/kdr-his1
 
 file="C:/Users/amw346/Desktop/1FLF1kdr.ab1"
@@ -138,11 +137,11 @@ testMatch(file6,1152)
 #kdr2/ v26 AND kdr6 v 26 1152 and 1570
 
 #testcase2
-#super-kdr2/superkdr3
 file8 = "C:/Users/amw346/Desktop/Batch 1/3KSF1kdr.ab1"
 #mod4range: 350-400
 compareHap(file8, newCombinedNoGapAllAdded)
 #0 rows 0 col
+#super-kdr2/superkdr3
 testMatch(file8,354)
 #167, 181, 189
 #un all 7021 0 rows 0 col
@@ -173,7 +172,7 @@ compareHap(file11, newCombinedNoGapAllAdded)
 #kdr-his3/v30 AND kdr-his3/v39
 testMatch(file11, 282) 
 
-#testcase6
+#testcase6 #incorrect call
 #v33/v37
 file12 = "C:/Users/amw346/Desktop/10KSF2kdr.ab1"
 #mod4: 4200,4300
@@ -183,6 +182,7 @@ testMatch(file12, 4279)
 #203
 #all 7022
 #0 rows 0 col
+#incorrect call 
 
 #testcase7 #match
 #super-kdr2/super-kdr2
@@ -191,7 +191,7 @@ file13 = "C:/Users/amw346/Desktop/Batch 1/11KSF1.ab1"
 compareHap(file13, newCombinedNoGapAllAdded)
 #super-kdr2/super-kdr2
 testMatch(file13, 6915)
-#0 rows 0 cols
+
 
 #testcase8 #match
 #v33/super-kdr2
@@ -209,7 +209,7 @@ compareHap(file15, newCombinedNoGapAllAdded)
 #v30/kdr2 v39/kdr2
 testMatch(file15, 1166)
 
-#testcase10
+#testcase10 #incorrect double TT
 #kdr2/super-kdr2
 file16 = "C:/Users/amw346/Desktop/Batch 1/14KSF1.ab1"
 #mod4: 1, 6903
