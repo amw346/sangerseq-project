@@ -34,7 +34,7 @@ compareHap(ks8f, newCombinedNoGapAllAdded)
 ks9f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-9F kdrFL-R7 s kdrFL.ab1"
 compareHap(ks9f, newCombinedNoGapAllAdded)
 testMatch(ks9f,6913)
-#0 rows 0 col
+#0 rows 0 col #due to messy beginning
 
 ks10f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-10F kdrFL-R7 s kdrFL.ab1"
 compareHap(ks10f, newCombinedNoGapAllAdded)
