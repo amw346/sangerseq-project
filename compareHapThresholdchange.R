@@ -1,8 +1,8 @@
 #change threshold of compare hap to 2 mismatches
 library(stringi)
 
-#examples of how to use function and arguments
 file="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
+#examples of how to use function and arguments
 file="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
 compareHap(file, newCombinedNoGap)
 
@@ -252,9 +252,30 @@ a = "TCATGATYGTGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCMTGATKGGACTGCATGTATGTGGGCGATGTC
 b = "YTTGTGGTAAGTTGACGTGGCCGAAACTRCTCCCCCGCTCCCAGGATGGAGGCTTCTGATGGCCWATTAAAAAAMMWTWWATYWWMMWYYMWCYTYYYYYYTYYYYYMWCTYYMWWCYKTMYWYYCKYYRCWGKTKCWK"
 c = "ACTRCTCCCCCGCTCCCAGGATGGAGGCTTCTGATGGCCWATTAAAAAAMMWTWWATYWWMMWYYMWCYTYYYYYYTYYYYYMWCTYYMWWCYKTMYWYYCKYYRCDGKTKCWKRWTCTTWWYYTWTYYTTRSYTTTGYYYHWSTYCRRMTTCGGATTTT"
 agrep(c, b, max.distance = list(all = 2))
+agrep("aaa", "xaab",max.distance = list(sub = 2))
 
 
-
-
+testMatch <- function(file,indexmain) {
+  sangerobj <- readsangerseq(file16) #read in file
+  index = clipIndex(sangerobj) #cut off all Ns at the end
+  
+  #cut and add combined string
+  basecalls <- makeBaseCalls(sangerobj)
+  pri <- primarySeq(basecalls, string = 'TRUE')
+  sec <- secondarySeq(basecalls, string = 'TRUE')
+  cutpri = substr(pri,20,index) 
+  cutsec = substr(sec,20,index)
+  b = addPriSec2(cutpri,cutsec)
+  a = newCombinedNoGapAllAdded[1126,1]
+  print(a)
+  print(b)
+  z = pairwiseAlignment(a,b)
+  writePairwiseAlignments(z)
+  str(z)
+  z[patter]
+  z@pattern@mismatch
+  z@subject@indel
+  z@subject@unaligned@quality
+}
 
 

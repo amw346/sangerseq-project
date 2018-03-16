@@ -55,6 +55,7 @@ testMatch <- function(file,indexmain) {
   print(b)
   z = pairwiseAlignment(a,b)
   writePairwiseAlignments(z)
+ 
 }
 nchar(b)
 #from kansas batch 1 folder
