@@ -45,7 +45,9 @@ ks11f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-11F kdrFL-R7 s 
 compareHap(ks11f, newCombinedNoGapAllAdded)
 #6913 match found 
 #run from 6904-7021
-#kdr1_(super-kdr3).seq ad kdr1_(super-kdr3).seq
+#kdr1_(super-kdr3).seq ad kdr1_(super-kdr3)
+
+
 
 testMatch <- function(file,indexmain) {
   sangerobj <- readsangerseq(ks10f) #read in file
@@ -64,3 +66,42 @@ testMatch <- function(file,indexmain) {
   z = pairwiseAlignment(a,b)
   writePairwiseAlignments(z)
 }
+
+ks4f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-4F kdrFL-R7 s kdrFL.ab1"
+ks6f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-6F kdrFL-R7 s kdrFL.ab1"
+ks7f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-7F kdrFL-R7 s kdrFL.ab1"
+ks12f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-12F kdrFL-R7 s kdrFL.ab1"
+ks14f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-14F kdrFL-R7 s kdrFL.ab1"
+ks15f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-15F kdrFL-R7 s kdrFL.ab1"
+ks16f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-16F kdrFL-R7 s kdrFL.ab1"
+
+ks18m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-18M kdrFL-R7 s kdrFL.ab1"
+ks19m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-19M kdrFL-R7 s kdrFL.ab1"
+ks20m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-20M kdrFL-R7 s kdrFL.ab1"
+ks21m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-21M kdrFL-R7 s kdrFL.ab1"
+ks22m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-22M kdrFL-R7 s kdrFL.ab1"
+ks24m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-24M kdrFL-R7 s kdrFL.ab1"
+ks25m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-25M kdrFL-R7 s kdrFL.ab1"
+ks26m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-26M kdrFL-R7 s kdrFL.ab1"
+ks30m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-30M kdrFL-R7 s kdrFL.ab1"
+ks31m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-31M kdrFL-R7 s kdrFL.ab1"
+
+
+sink("C:/Users/amw346/Desktop/compareHapOutputKansas.txt")
+compareHap(ks4f, newCombinedNoGapAllAdded)
+compareHap(ks6f, newCombinedNoGapAllAdded)
+compareHap(ks7f, newCombinedNoGapAllAdded)
+compareHap(ks12f, newCombinedNoGapAllAdded)
+compareHap(ks14f, newCombinedNoGapAllAdded)
+compareHap(ks15f, newCombinedNoGapAllAdded)
+compareHap(ks16f, newCombinedNoGapAllAdded)
+compareHap(ks18m, newCombinedNoGapAllAdded)
+compareHap(ks19m, newCombinedNoGapAllAdded)
+compareHap(ks20m, newCombinedNoGapAllAdded)
+compareHap(ks21m, newCombinedNoGapAllAdded)
+compareHap(ks22m, newCombinedNoGapAllAdded)
+compareHap(ks24m, newCombinedNoGapAllAdded)
+compareHap(ks25m, newCombinedNoGapAllAdded)
+compareHap(ks30m, newCombinedNoGapAllAdded)
+compareHap(ks31m, newCombinedNoGapAllAdded)
+
