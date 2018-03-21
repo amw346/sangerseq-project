@@ -67,6 +67,7 @@ testMatch <- function(file,indexmain) {
   writePairwiseAlignments(z)
 }
 
+#Round 1
 ks4f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-4F kdrFL-R7 s kdrFL.ab1"
 ks6f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-6F kdrFL-R7 s kdrFL.ab1"
 ks7f="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-7F kdrFL-R7 s kdrFL.ab1"
@@ -104,4 +105,21 @@ compareHap(ks24m, newCombinedNoGapAllAdded)
 compareHap(ks25m, newCombinedNoGapAllAdded)
 compareHap(ks30m, newCombinedNoGapAllAdded)
 compareHap(ks31m, newCombinedNoGapAllAdded)
+
+#round two
+ks13f ="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-13F kdrFL-R7 s kdrFL.ab1"
+ks23m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-23M kdrFL-R7 s kdrFL.ab1"
+ks26m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-26M kdrFL-R7 s kdrFL.ab1"
+ks27m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-27M kdrFL-R7 s kdrFL.ab1"
+ks28m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-28M kdrFL-R7 s kdrFL.ab1"
+ks29m="C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-29M kdrFL-R7 s kdrFL.ab1"
+
+sink("C:/Users/amw346/Desktop/compareHapOutputKansasRound2.txt")
+compareHap(ks13f, newCombinedNoGapAllAdded)
+compareHap(ks23m, newCombinedNoGapAllAdded)
+compareHap(ks26m, newCombinedNoGapAllAdded)
+compareHap(ks27m, newCombinedNoGapAllAdded)
+compareHap(ks28m, newCombinedNoGapAllAdded)
+compareHap(ks29m, newCombinedNoGapAllAdded)
+sink()
 
