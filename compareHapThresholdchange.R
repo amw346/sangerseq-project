@@ -76,6 +76,38 @@ MODcheckMasterList4<- function(newseq, master) {
 }
 
 
+
+MODcheckMasterList5<- function(newseq, master) {
+  matchesList = data.frame()
+  count = 1
+  for (i in 1:7021) {
+    found = FALSE
+    alignseq = pairwiseallign(newseq,master[i,1])
+    sum = summary(allignseq)
+    found = (sum@nmismatch < 3) & (sum@ninsertion[2] < 3) & (sum@ndeletion[2] < 3)
+    print(i)
+    if (found == TRUE) {
+      matchesList[count,1]= master[i,1]
+      matchesList[count,2]= master[i,2]
+      matchesList[count,3]= master[i,3]
+      count = 1+count
+      print(i)
+      print("match found")
+      
+    }
+  }
+  
+  return(matchesList)
+}
+
+
+w = "AATTTCCTTTCCATCTATCTATCTATCATMMDMDMDMDMDMDDDMDM"
+C = "AATTTCCTTTCCATCTATCTATCTATCATYYYYYYYYYYYYYYYYYY"
+u = pairwiseAlignment(w,C)
+b8 = writePairwiseAlignments(u)
+g =summary(u)
+g@nmismatch
+
 addPriSeq2 <- function(pri,sec) {
   #addPriSeq inputs two strings of same length and outputs a string that is the combined version according to IUPAC codes
   
@@ -277,5 +309,30 @@ testMatch <- function(file,indexmain) {
   z@subject@indel
   z@subject@unaligned@quality
 }
+
+z@nmatch
+s = summary(z)
+s@nmatch
+
+nchar(a)
+nchar(b)
+str(z)
+str(summary(z))
+atrr()
+s@ninsertion
+
+b="TCATGTATYGTGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCMTGTTGGGACTGCATGTATGTGGGCGATGTCAGCTGTATACCCTTCTTCTTGGCCACGGTCGTGATCGGCAATTTTGTGGTAAGTTGACGTGGCCGAAACTRCTCCCCCGCTCCCAGGATGGAGGCTTCWKMYGKMMWATWMAWAAAWWTKAMATYWAYCTCTCTCTTTCTCTCTCYCWMMWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+a2 = "GAATTTCACCGACTTCATGCACAGCTTCATGATTGTGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCATGTGGGACTGCATGTATGTGGGCGATGTCAGCTGTATACCCTTCTTCTTGGCCACGGTCGTGATCGGCAATTTTGTGGTAAGTTGACGTGGCCGAAACTRCTCCCCCGCTCCCAGGATGGAGGCTTCWKMYGKMMWATWMAWAAAWWTKAMATYWAYCTCTCTCTTTCTCTC"
+r = pairwiseAlignment(b,a2)
+writePairwiseAlignments(r)
+y = summary(r)
+y@ninsertion
+y@ndeletion
+y@nmismatch
+
+r2 = pairwiseAlignment(a2,b)
+writePairwiseAlignments(r2)
+y2 = summary(r2)
+y2@ninsertion
 
 
