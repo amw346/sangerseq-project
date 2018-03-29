@@ -6,13 +6,14 @@ file="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
 file="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
 compareHap(file, newCombinedNoGap)
 
+
 #warnings
 #addbases requires capital letters
 #you should run library(stringi)before hand otherwise stri_detect_fixed will throw error
-
 compareHap<- function(file, master) {
   #inputs a chromatogram file and outputs the list of matches with the master list and the sequence that was a match
   sangerobj <- readsangerseq(file) #read in file
+  print(file)
   index = clipIndex(sangerobj) #cut off all Ns at the end
   
   #cut and add combined string
@@ -22,11 +23,12 @@ compareHap<- function(file, master) {
   cutpri = substr(pri,20,index) 
   cutsec = substr(sec,20,index)
   combined = addPriSec2(cutpri,cutsec)
-  
+  print(combined)
   #look for matches within the master list supplied to function
   match = MODcheckMasterList4(combined,master)
   return (match)
 }
+
 
 
 #HELPER FUNCTIONS FOR REFERENCE
@@ -55,7 +57,7 @@ MODcheckMasterList4<- function(newseq, master) {
   matchesList = data.frame()
   len = dim(master)[1]
   count = 1
-  for (i in 1:7021) {
+  for (i in 200:300) {
     found = FALSE
     overlap = overlapIsTrue(newseq,master[i,1])
     
@@ -82,10 +84,10 @@ MODcheckMasterList5<- function(newseq, master) {
   count = 1
   for (i in 1:7021) {
     found = FALSE
-    alignseq = pairwiseallign(newseq,master[i,1])
-    sum = summary(allignseq)
+    alignseq = pairwiseAlignment(newseq,master[i,1])
+    sum = summary(alignseq)
     found = (sum@nmismatch < 3) & (sum@ninsertion[2] < 3) & (sum@ndeletion[2] < 3)
-    print(i)
+   
     if (found == TRUE) {
       matchesList[count,1]= master[i,1]
       matchesList[count,2]= master[i,2]
@@ -335,4 +337,22 @@ writePairwiseAlignments(r2)
 y2 = summary(r2)
 y2@ninsertion
 
-
+testfile = "C:/Users/amw346/Desktop/8KSF1kdr2.ab1"
+sangerobj <- readsangerseq(testfile) #read in file
+print(file)
+index = clipIndex(sangerobj) #cut off all Ns at the end
+#221
+seqcutoff = "TNCGACTNAGCACAGCTTCATGATTGTGGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCANGNTGGGACTGCATGTATGTGGGCGATGTCAGCTGTATACCCTTTCTTCTTGGCCACGGTCGTGATCGGCAATCNTGTGGTAAGTTGACGTGGCCGAAACTGCTCCCCCGCTCCCAGGATGGAGGCTTCAGANGNCCAANTAAANANANTTAANNCNTNNN"
+nchar(seqcutoff)
+#run again its still 221
+basecalls <- makeBaseCalls(sangerobj)
+pri <- primarySeq(basecalls, string = 'TRUE')
+sec <- secondarySeq(basecalls, string = 'TRUE')
+cutpri = substr(pri,20,index) 
+cutsec = substr(sec,20,index)
+combined = addPriSec2(cutpri,cutsec)
+print(combined)
+sangerobj <- readsangerseq(testfile) #read in file
+print(file)
+index = clipIndex(sangerobj)
+#221

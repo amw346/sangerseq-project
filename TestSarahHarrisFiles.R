@@ -40,7 +40,7 @@ writePairwiseAlignments(z)
 
 
 testMatch <- function(file,indexmain) {
-  sangerobj <- readsangerseq(file) #read in file
+  sangerobj <- readsangerseq(file11) #read in file
   index = clipIndex(sangerobj) #cut off all Ns at the end
   
   #cut and add combined string
@@ -50,7 +50,7 @@ testMatch <- function(file,indexmain) {
   cutpri = substr(pri,20,index) 
   cutsec = substr(sec,20,index)
   b = addPriSec2(cutpri,cutsec)
-  a = newCombinedNoGapAllAdded[indexmain,1]
+  a = newCombinedNoGapAllAdded[282,1]
   print(a)
   print(b)
   z = pairwiseAlignment(a,b)
