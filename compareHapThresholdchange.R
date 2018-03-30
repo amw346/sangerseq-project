@@ -86,7 +86,7 @@ MODcheckMasterList5<- function(newseq, master) {
     found = FALSE
     alignseq = pairwiseAlignment(newseq,master[i,1])
     sum = summary(alignseq)
-    found = (sum@nmismatch < 3) & (sum@ninsertion[2] < 3) & (sum@ndeletion[2] < 3)
+    found = (sum@nmismatch < 3) & (sum@ninsertion[2] == 0) & (sum@ndeletion[2] == 0)
    
     if (found == TRUE) {
       matchesList[count,1]= master[i,1]
@@ -337,6 +337,7 @@ writePairwiseAlignments(r2)
 y2 = summary(r2)
 y2@ninsertion
 
+
 testfile = "C:/Users/amw346/Desktop/8KSF1kdr2.ab1"
 sangerobj <- readsangerseq(testfile) #read in file
 print(file)
@@ -356,3 +357,23 @@ sangerobj <- readsangerseq(testfile) #read in file
 print(file)
 index = clipIndex(sangerobj)
 #221
+
+testfile3 = "C:/Users/amw346/Desktop/Batch 1/4KSF1kdr.ab1"
+sangerobj <- readsangerseq(testfile3) #read in file
+index = clipIndex(sangerobj)
+basecalls <- makeBaseCalls(sangerobj)
+pri <- primarySeq(basecalls, string = 'TRUE')
+sec <- secondarySeq(basecalls, string = 'TRUE')
+cutpri = substr(pri,20,index) 
+cutsec = substr(sec,20,index)
+combined = addPriSec2(cutpri,cutsec)
+index
+
+#index seems to remain the same, problem remains
+compareHap(testfile3, newCombinedNoGapAllAdded)
+
+sewe = combined
+alignseq2 = pairwiseAlignment(sewe,newCombinedNoGapAllAdded[1275,1])
+writePairwiseAlignments(alignseq2)
+sum2 = summary(alignseq2)
+found = (sum2@nmismatch < 3) & (sum2@ninsertion[2] == 0) & (sum2@ndeletion[2] == 0)
