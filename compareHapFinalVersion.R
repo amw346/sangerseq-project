@@ -11,6 +11,7 @@ compareHap(file, newCombinedNoGap)
 #you should run library(stringi)before hand otherwise stri_detect_fixed will throw error
 
 compareHap<- function(file, master) {
+  print(file)
   #inputs a chromatogram file and outputs the list of matches with the master list and the sequence that was a match
   sangerobj <- readsangerseq(file) #read in file
   index = clipIndex(sangerobj) #cut off all Ns at the end
@@ -21,12 +22,14 @@ compareHap<- function(file, master) {
   sec <- secondarySeq(basecalls, string = 'TRUE')
   cutpri = substr(pri,20,index) 
   cutsec = substr(sec,20,index)
-  combined = addPriSec2(cutpri,cutsec)
-  
+  combined = addPriSeq3(cutpri,cutsec)
+  print(combined)
   #look for matches within the master list supplied to function
   match = MODcheckMasterList4(combined,master)
+  print(match)
   return (match)
 }
+
 
 
 #HELPER FUNCTIONS FOR REFERENCE
@@ -60,18 +63,18 @@ MODcheckMasterList4<- function(newseq, master) {
     overlap = overlapIsTrue(newseq,master[i,1])
  
     found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE) | overlap )
-    print(i)
+  
     if (found == TRUE) {
       matchesList[count,1]= master[i,1]
       matchesList[count,2]= master[i,2]
       matchesList[count,3]= master[i,3]
-      count = 1+count
       print(i)
       print("match found")
     
     }
   }
-  
+   count = 1+count
+     
   return(matchesList)
 }
 
@@ -213,12 +216,13 @@ addbases1<- function(a,b) {
   return ("input strings not valid")	
 }
 
+
 overlapIsTrue <- function(long, short) {
   #function inputs two strings and checks to see if they have a matching overlapping portion
   #returns true if match is found
-  
-  t = pairwiseAlignment(long, short) # align strings to see where they overlap
 
+  t = pairwiseAlignment(long, short) # align strings to see where they overlap
+ 
   shortindex = t@subject@range@start
   longindex = t@pattern@range@start
   
