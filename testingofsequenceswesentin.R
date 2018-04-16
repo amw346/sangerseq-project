@@ -170,8 +170,15 @@ sink("C:/Users/amw346/Desktop/comparehapmdseq.txt")
 for (i in 1:32) {
   compareHap(filenamesforMD[i],newCombinedNoGapAllAdded7021)
 }
+sink()
 
+otherfn <- list.files("C:/Users/amw346/Desktop/fliesUTNM", full.name = TRUE)
+sink("C:/Users/amw346/Desktop/comparehapUTNMNEseqnext40REDO.txt")
+for (i in 42:83) {
+  compareHap(otherfn[i],newCombinedNoGapAllAdded7021)
+}
 
+f67= "C:/Users/amw346/Desktop/fliesUTNM/NE16_09Feb17-2F kdrFL-MdSCR7 s kdrFL.ab1"
 
 
 
