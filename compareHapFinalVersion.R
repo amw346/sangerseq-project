@@ -14,7 +14,7 @@ compareHap<- function(file, master) {
   print(file)
   #inputs a chromatogram file and outputs the list of matches with the master list and the sequence that was a match
   sangerobj <- readsangerseq(file) #read in file
-  index = clipIndex(sangerobj) #cut off all Ns at the end
+  index = clipIndex2(sangerobj) #cut off all Ns at the end
   
   #cut and add combined string
   basecalls <- makeBaseCalls(sangerobj)
@@ -34,9 +34,11 @@ compareHap<- function(file, master) {
 
 #HELPER FUNCTIONS FOR REFERENCE
 clipIndex <- function(sangob) { 
+  print("in index function")
   pri = primarySeq(sangob,string = TRUE) 
   len = nchar(pri) 
   num = 0 
+  print(num)
   found = FALSE 
   for (i in 1:len) { 
     c1= substr(pri,i,i) 
@@ -50,9 +52,34 @@ clipIndex <- function(sangob) {
     } 
     num = i +1 
   } 
+  print(num)
   return (num-2)
 }
 
+clipIndex2 <- function(sangob) { 
+  print("in index function")
+  pri = primarySeq(sangob,string = TRUE) 
+  len = nchar(pri) 
+  num = 0 
+  print(num)
+  found = FALSE 
+  for (i in 1:len) { 
+    c1= substr(pri,i,i) 
+    c2 = substr(pri,i+1,i+1) 
+    c3 = substr(pri,i+2,i+2) 
+    if (found) { 
+      print(i)
+      print("found was true")
+      return(num-2) 
+    } 
+    if ((c1 == "N") & (c2 == "N") & (c3 == "N")) { 
+      found = TRUE 
+    } 
+    num = i +1 
+  } 
+  print("theres definiely an error coming from clipindex2")
+  return (num-2)
+}
 
 MODcheckMasterList4<- function(newseq, master) {
   matchesList = data.frame()
@@ -92,7 +119,7 @@ addPriSeq3 <- function(pri,sec) {
   #adding the elements
   combined = ""
   for (i in 1:len) {
-    newchar = addbases3(substr(pri,i,i), substr(sec,i,i),len)
+    newchar = addbases2(substr(pri,i,i), substr(sec,i,i))
     combined= paste0(combined, newchar)
   }
   

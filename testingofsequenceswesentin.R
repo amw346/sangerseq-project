@@ -180,6 +180,85 @@ for (i in 42:83) {
 
 f67= "C:/Users/amw346/Desktop/fliesUTNM/NE16_09Feb17-2F kdrFL-MdSCR7 s kdrFL.ab1"
 
+#code to set up matching against itself
+#create directory
+filenamesfornomatch <- list.files("C:/Users/amw346/Desktop/nomatchfiles", full.name = TRUE)
+filenamesfornomatchshort <- list.files("C:/Users/amw346/Desktop/nomatchfiles", full.name = FALSE)
+nomatchFiles = data.frame()
+
+for (i in 1:69) {
+  
+  combo = genseq(filenamesfornomatch[i])
+  nomatchFiles[i,1] = combo
+  nomatchFiles[i,2] = filenamesfornomatchshort[i]
+  nomatchFiles[i,3] = filenamesfornomatchshort[i]
+}
+
+genseq <- function(file) {
+  sangerobj <- readsangerseq(f66) #read in file
+  index = clipIndex2(sangerobj) #cut off all Ns at the end
+  
+  #cut and add combined string
+  basecalls <- makeBaseCalls(sangerobj)
+  pri <- primarySeq(basecalls, string = 'TRUE')
+  sec <- secondarySeq(basecalls, string = 'TRUE')
+  cutpri = substr(pri,20,index) 
+  cutsec = substr(sec,20,index)
+  combined = addPriSeq3(cutpri,cutsec)
+  return(combined)
+}
+
+f66= filenamesfornomatchNE[2]
+filenamesfornomatchNE <- list.files("C:/Users/amw346/Desktop/nenomatch", full.name = TRUE)
+filenamesfornomatchshortNE <- list.files("C:/Users/amw346/Desktop/nenomatch", full.name = FALSE)
+nomatchFilesNE = data.frame()
+
+for (i in 1:8) {
+  
+  combo = genseq(filenamesfornomatchNE[i])
+  nomatchFilesNE[i,1] = combo
+  nomatchFilesNE[i,2] = filenamesfornomatchshortNE[i]
+  nomatchFilesNE[i,3] = filenamesfornomatchshortNE[i]
+}
+
+
+
+sink("C:/Users/amw346/Desktop/noMatchNEredo7.txt")
+for (i in 1:8) {
+  compareHap(filenamesfornomatchNE[i],nomatchFilesNE)
+  print(nomatchFilesNE[i,1])
+}
+sink()
+nomatchFilesNE[1,1]
+
+MODcheckMasterList6<- function(newseq, master) {
+  matchesList = data.frame()
+  len = dim(master)[1]
+  count = 1
+  for (i in 1:8) {
+    found = FALSE
+    overlap = overlapIsTrue(newseq,master[i,1])
+    
+    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE) | overlap )
+    
+    if (found == TRUE) {
+      matchesList[count,1]= master[i,1]
+      matchesList[count,2]= master[i,2]
+      matchesList[count,3]= master[i,3]
+      print(i)
+      print("match found")
+      
+    }
+    
+  }
+  count = 1+count
+  
+  return(matchesList)
+}
+
+
+pairwiseAlignment(nomatchFilesNE[3,1],nomatchFilesNE[2,1])
+
 
 
 
