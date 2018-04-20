@@ -195,7 +195,7 @@ for (i in 1:69) {
 }
 
 genseq <- function(file) {
-  sangerobj <- readsangerseq(f66) #read in file
+  sangerobj <- readsangerseq(file) #read in file
   index = clipIndex2(sangerobj) #cut off all Ns at the end
   
   #cut and add combined string
@@ -223,7 +223,7 @@ for (i in 1:8) {
 
 
 
-sink("C:/Users/amw346/Desktop/noMatchNEredo7.txt")
+sink("C:/Users/amw346/Desktop/noMatchNEredo8.txt")
 for (i in 1:8) {
   compareHap(filenamesfornomatchNE[i],nomatchFilesNE)
   print(nomatchFilesNE[i,1])
@@ -259,7 +259,102 @@ MODcheckMasterList6<- function(newseq, master) {
 
 pairwiseAlignment(nomatchFilesNE[3,1],nomatchFilesNE[2,1])
 
+#MD files no match
+#you have to change the index in MODcheckmasterlist to 1:18 or whatever it shoule be
+
+filenamesfornomatchMD <- list.files("C:/Users/amw346/Desktop/MDnomatch", full.name = TRUE)
+filenamesfornomatchshortMD <- list.files("C:/Users/amw346/Desktop/MDnomatch", full.name = FALSE)
+nomatchFilesMD = data.frame()
+
+for (i in 1:18) {
+  
+  combo = genseq(filenamesfornomatchMD[i])
+  nomatchFilesMD[i,1] = combo
+  nomatchFilesMD[i,2] = filenamesfornomatchshortMD[i]
+  nomatchFilesMD[i,3] = filenamesfornomatchshortMD[i]
+}
+
+sink("C:/Users/amw346/Desktop/noMatchMD2.txt")
+for (i in 1:18) {
+  compareHap(filenamesfornomatchMD[i],nomatchFilesMD)
+  print(nomatchFilesMD[i,1])
+}
+sink()
 
 
+
+#allnomatchfiles
+
+for (i in 1:69) {
+  
+  combo = genseq(filenamesfornomatch[i])
+  nomatchFiles[i,1] = combo
+  nomatchFiles[i,2] = filenamesfornomatchshort[i]
+  nomatchFiles[i,3] = filenamesfornomatchshort[i]
+}
+
+filenamesfornomatch[57]
+
+sangerobj <- readsangerseq("C:/Users/amw346/Desktop/nomatchfiles/UT17_25Jul17-4F kdrFL-MdSCR7 s kdrFL.ab1") #read in file
+index = clipIndex2(sangerobj) #cut off all Ns at the end
+
+#cut and add combined string
+basecalls <- makeBaseCalls(sangerobj)
+pri <- primarySeq(basecalls, string = 'TRUE')
+sec <- secondarySeq(basecalls, string = 'TRUE')
+cutpri = substr(pri,20,index) 
+cutsec = substr(sec,20,index)
+combined = addPriSeq3(cutpri,cutsec)
+
+#code to manually fix 65 and 57
+index = nchar("NANNNCGACGACATNACACCAATCNTGGATTGAGATTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCATGTGGGACTGTATGTATGTGGGCGATGTCAGCTGTATACCCTTCTTCTTGGCCACGGTCGTGATCGGCAATTTTGTGGTAAGTTGACGTGGCCGAAACTGCTCCCNNGATGNAGGCNTCGNAGGGNCANATNANAAAAANNAAANNANCCTCTCTCTTTCTCTCTCTCTCANCTTNANTCCNCCNATCCGCGTGCAGGCNCTTAANCGTTTTCTAANCTTTGCTTTTGTCC")
+nomatchFiles[65,1] = combined
+
+sangerobj <- readsangerseq("C:/Users/amw346/Desktop/nomatchfiles/UT17_25Jul17-25M kdrFL-MdSCR7 s kdrFL.ab1") #read in file
+index = clipIndex2(sangerobj) #cut off all Ns at the end
+
+#cut and add combined string
+basecalls <- makeBaseCalls(sangerobj)
+pri <- primarySeq(basecalls, string = 'TRUE')
+sec <- secondarySeq(basecalls, string = 'TRUE')
+cutpri = substr(pri,20,index) 
+cutsec = substr(sec,20,index)
+combined = addPriSeq3(cutpri,cutsec)
+
+#code to manually fix 65 and 60
+index = nchar("GCNANTGNGGCCNNNCAGNACCAANTGGTTCNAAGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCATGTGGGACTGCATGTATGTGGGCGATGTCAGCTGTATACCCTTCTTCTTGGCCACGGTCGTGATCGGCAATTTTGTGGTAAGTTGACGTGGCCGAAACTNCTCCCCCGCTCCCAGGATGGAGGCTTCANNCGNAANATACATAAANNTGACATTTATCTCTCTCTTTCTCTCTCCCAANTTTATTCTCTCCNCNGTTGCAGGNTNTTAATCTTNTCTTAGCATTGCTTTTGTCNAACTTCNGTTCATCTANTTTATCANCCCCNACTGCCGACAATGAT")
+nomatchFiles[57,1] = combined
+
+#add kansas
+
+
+filenamesfornomatchKS <- list.files("C:/Users/amw346/Desktop/ksnomatch", full.name = TRUE)
+filenamesfornomatchshortKS <- list.files("C:/Users/amw346/Desktop/ksnomatch", full.name = FALSE)
+
+noMatchFilesUTNMNEMDKS = nomatchFiles
+
+for (i in 1:16) {
+  
+  combo = genseq(filenamesfornomatchKS[i])
+  noMatchFilesUTNMNEMDKS[i+69,1] = combo
+  noMatchFilesUTNMNEMDKS[i+69,2] = filenamesfornomatchshortKS[i]
+  noMatchFilesUTNMNEMDKS[i+69,3] = filenamesfornomatchshortKS[i]
+}
+
+
+#compare all to eachother
+
+sink("C:/Users/amw346/Desktop/noMatchksaddedallREDO.txt")
+for (i in 1:85) {
+  print(i)
+  compareHap(filenamesfornomatchALL[i],noMatchFilesUTNMNEMDKS)
+}
+sink()
+
+for (i in 1:16) {
+  filenamesfornomatchALL[i+69] = filenamesfornomatchKS[i]  
+}
+
+filenamesfornomatchALL[61]
 
 

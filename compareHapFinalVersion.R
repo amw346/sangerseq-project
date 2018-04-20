@@ -85,7 +85,7 @@ MODcheckMasterList4<- function(newseq, master) {
   matchesList = data.frame()
   len = dim(master)[1]
   count = 1
-  for (i in 1:7021) {
+  for (i in 1:85) {
     found = FALSE
     overlap = overlapIsTrue(newseq,master[i,1])
  
