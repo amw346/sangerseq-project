@@ -6,7 +6,7 @@ file="C:/Users/amw346/Desktop/NChis11May16-1FkdrFL-R7skdrFL.ab1"
 file="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
 compareHap(file, newCombinedNoGap)
 
-
+ 
 #warnings
 #addbases requires capital letters
 #you should run library(stringi)before hand otherwise stri_detect_fixed will throw error
@@ -82,11 +82,12 @@ MODcheckMasterList4<- function(newseq, master) {
 MODcheckMasterList5<- function(newseq, master) {
   matchesList = data.frame()
   count = 1
-  for (i in 1:7021) {
+  for (i in 6903:7021) {
+    
     found = FALSE
     alignseq = pairwiseAlignment(newseq,master[i,1])
     sum = summary(alignseq)
-    found = (sum@nmismatch < 3) & (sum@ninsertion[2] == 0) & (sum@ndeletion[2] == 0)
+    found = (sum@nmismatch < 2) & (sum@ninsertion[2] ==0 ) & (sum@ndeletion[2] == 0)
    
     if (found == TRUE) {
       matchesList[count,1]= master[i,1]
@@ -377,3 +378,6 @@ alignseq2 = pairwiseAlignment(sewe,newCombinedNoGapAllAdded[1275,1])
 writePairwiseAlignments(alignseq2)
 sum2 = summary(alignseq2)
 found = (sum2@nmismatch < 3) & (sum2@ninsertion[2] == 0) & (sum2@ndeletion[2] == 0)
+
+f96 = "C:/Users/amw346/Desktop/Batch 1/5KSF1kdr.ab1"
+compareHap(f96,newCombinedNoGapAllAdded)
