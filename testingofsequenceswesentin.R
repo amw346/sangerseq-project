@@ -74,6 +74,10 @@ compareHap4string(KS17_18Jul17_12F_colony3_kdrFL_R7, newCombinedNoGapAllAdded702
 #matchfound
 #kdr1_(super-kdr3)
 
+n66 = newCombinedNoGapAllAdded7021[1019,1]
+n98= newCombinedNoGapAllAdded7021[6913,1]
+f = pairwiseAlignment(KS17_18Jul17_12F_colony3_kdrFL_R7,n98)
+writePairwiseAlignments(f)
 #test 4 
 KS17_18Jul17_14F_colony1_kdrFL_R7 = "TCGCTTCAAGGACCATGAATTACCGCGCTGGAATTTCACCGACTTCATGCACAGCTTCATGATTGTGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCATGTGGGACTGCATGTATGTGGGCGATGTCAGCTGTATACCCTTCTTCTTGGCCACGGTCGTGATCGGCAATTTTGTGGTAAGTTGACGTGGCCGAAACTACTCCCCCGCTCCCAGGATGGAGGCTTCATCCGTAATATACATAAATTTGACATTTATCTCTCTCTTTCTCTCTCCCAACTTTATTCTCTCCACTGTTGCAGGTTCTTAATCTTTTCTTAGCTTTGCTTTTGTCCAACTTCGGTTCATCTAGTTTATCAGCCCCGACTGCCGACAATGATACCA"
 compareHap4string(KS17_18Jul17_14F_colony1_kdrFL_R7, newCombinedNoGapAllAdded7021)
@@ -88,8 +92,10 @@ compareHap4string(KS17_18Jul17_14F_colony2_kdrFL_R7, newCombinedNoGapAllAdded702
 
 #test6
 KS17_18Jul17_14F_colony3_kdrFL_R7 = "TCGCTTCAAGGACCATGAATTACCGCGCTGGAACTTCACCGACTTCATGCACAGCTTCATGATTGTGTTCCGAGTGCTGTGCGGAGAGTGGATCGAGTCCATGTGGGACTGTATGTATGTGGGCGATGTCAGCTGTATACCCTTCTTCTTGGCCACGGTCGTGATCGGCAATTTTGTGGTAAGTTGACGTGGCCGAAACTGCTCCCAGGATGGGGGCTTCTGATGGCCAATTAAAAAAAATTAAATCAACCTCTCTCTTTCTCTCTCTCTCAACTTTATTCCGTCCATCCGTTGCAGGTTCTTAATCTTTTCTTAGCTTTGCTTTTGTCCAACTTCGGTTCATCTAGTTTATCAGCCCCGACTGCCGACAATGATACCA"
-compareHap4string(KS17_18Jul17_14F_colony3_kdrFL_R7, newCombinedNoGapAllAdded7021)
+MODcheckMasterList7(KS17_18Jul17_14F_colony3_kdrFL_R7, newCombinedNoGapAllAdded7021)
 #nomatch
+MODcheckMasterList5(KS17_18Jul17_14F_colony3_kdrFL_R7, newCombinedNoGapAllAdded)
+#closest match <3 mismatch kdr1_(super-kdr3)
 
 
 #observing why nomatch was found for these sequences
@@ -356,5 +362,36 @@ for (i in 1:16) {
 }
 
 filenamesfornomatchALL[61]
+
+file4555 = "C:/Users/amw346/Desktop/ksnomatch/KS2017_18Jul17-14F kdrFL-R7 s kdrFL.ab1"
+file3333 = "C:/Users/amw346/Desktop/ksnomatch/KS2017_18Jul17-15F kdrFL-R7 s kdrFL.ab1"
+file2222 = "C:/Users/amw346/Desktop/ksnomatch/KS2017_18Jul17-21M kdrFL-R7 s kdrFL.ab1"
+f14 = genseq(file4555)
+
+f15 = genseq(file3333)
+
+f16= genseq(file2222)
+e = pairwiseAlignment(f14,f15)
+writePairwiseAlignments(e)
+
+f = pairwiseAlignment(f14,f16)
+writePairwiseAlignments(f)
+
+g = pairwiseAlignment(f15,f16)
+writePairwiseAlignments(g)
+
+
+
+#fuzzy match run with mod5 2 mismatch
+f96 = "C:/Users/amw346/Desktop/Batch 1/5KSF1kdr.ab1"
+compareHap(f96,newCombinedNoGapAllAdded)
+
+
+f97 = "C:/Users/amw346/Desktop/10KSF2kdr.ab1"
+compareHap(f97,newCombinedNoGapAllAdded)
+
+
+
+
 
 
