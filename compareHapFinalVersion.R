@@ -25,10 +25,11 @@ compareHap<- function(file, master) {
   combined = addPriSeq3(cutpri,cutsec)
   print(combined)
   #look for matches within the master list supplied to function
-  match = MODcheckMasterList4(combined,master)
+  match = MODcheckMasterList5(combined,master)
   print(match)
   return (match)
 }
+
 
 
 
@@ -85,7 +86,7 @@ MODcheckMasterList4<- function(newseq, master) {
   matchesList = data.frame()
   len = dim(master)[1]
   count = 1
-  for (i in 1:85) {
+  for (i in 6902:7029) {
     found = FALSE
     overlap = overlapIsTrue(newseq,master[i,1])
  
@@ -329,7 +330,7 @@ addbases1<- function(a,b) {
 }
 
 
-overlapIsTrue <- function(long, short) {
+overlapIsTrue <- function(long=combined, short=newCombinedNoGapAllAdded[6902,1]) {
   #function inputs two strings and checks to see if they have a matching overlapping portion
   #returns true if match is found
 
