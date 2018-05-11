@@ -1,37 +1,42 @@
-#COMPARE A FILE TO THE MASTERLIST AND FIND POSSIBLE COMBOS
+#File contains the function compareHap() which compares a file to a database  
+#also contains all the dependant functions called in compareHap()
+#made in R version 3.4.2
+
+#necessary packages: sangerseqR, Biostrings, BioCGenerics, parallel
 library(stringi)
 
 #examples of how to use function and arguments
-file="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
-#database: newCombinedNoGapAllAdded
-compareHap(file, newCombinedNoGap)
+#example file="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
+#example database: newCombinedNoGapAllAdded
+compareHap(file, newCombinedNoGapAllAdded)
 
 #warnings
-#addbases requires capital letters
+#addbases2 requires capital letters
 #you should run library(stringi)before hand otherwise stri_detect_fixed will throw error
 
+
 compareHap<- function(file, master) {
-  print(file)
-  #inputs a chromatogram file and outputs the list of matches with the master list and the sequence that was a match
+  #inputs a chromatogram file and outputs the list of matches from database and the pairs of haplotypes that was a match
   sangerobj <- readsangerseq(file) #read in file
-  index = clipIndex2(sangerobj) #cut off all Ns at the end
+  index = clipIndex2(sangerobj) #finds the index to cut off all Ns at the end
   
   #cut and add combined string
   basecalls <- makeBaseCalls(sangerobj)
   pri <- primarySeq(basecalls, string = 'TRUE')
   sec <- secondarySeq(basecalls, string = 'TRUE')
-  cutpri = substr(pri,20,index) 
+  cutpri = substr(pri,20,index) #cuts string from 20 to the index
   cutsec = substr(sec,20,index)
   combined = addPriSeq3(cutpri,cutsec)
   print(combined)
+  
   #look for matches within the master list supplied to function
   match = MODcheckMasterList4(combined,master)
-  print(match)
+
   return (match)
 }
 
 clipIndex2 <- function(sangob) { 
-  print("in index function")
+  #input a sangerobject from sangerseqR package and will output the index of the first occurance of three NNNs.
   pri = primarySeq(sangob,string = TRUE) 
   len = nchar(pri) 
   num = 0 
@@ -51,40 +56,28 @@ clipIndex2 <- function(sangob) {
     } 
     num = i +1 
   } 
-  print("theres definiely an error coming from clipindex2")
+  print("theres definitely an error coming from clipindex2")
   return (num-2)
 }
 
-
-
-MODcheckMasterList4<- function(newseq, master) {
-  #make dataframe for the matches to return in
-  matchesList = data.frame()
-  len = dim(master)[1]
-  count = 1
-  #loop through all possible sequences in database
-  for (i in 1:7029) {
-    #reset varible to not found and then check if it matches
-    found = FALSE
-    overlap = overlapIsTrue(newseq,master[i,1])
-    
-    #looks for overlap or one inside the other
-    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE) | overlap )
-    
-    if (found == TRUE) {
-      matchesList[count,1]= master[i,1]
-      matchesList[count,2]= master[i,2]
-      matchesList[count,3]= master[i,3]
-      print(i)
-      print("match found")
-      
-    }
-  }
-  count = 1+count
+addPriSeq3 <- function(pri,sec) {
+  #addPriSeq inputs two strings of same length and outputs a string that is the combined version according to IUPAC codes
   
-  return(matchesList)
+  #checking if same length otherwise error message
+  len = nchar(pri)
+  len2 = nchar(sec)
+  if (len != len2) {return ("input sequences different lengths")}
+  
+  #adding the elements
+  combined = ""
+  for (i in 1:len) {
+    newchar = addbases2(substr(pri,i,i), substr(sec,i,i))
+    combined= paste0(combined, newchar)
+  }
+  
+  #returning the added sequence
+  return (AddedSeq = combined)
 }
-
 
 addbases2<- function(a,b) {
   #addbases inputs two single character strings and outputs a single letter string according to IUPAC codes
@@ -145,11 +138,43 @@ addbases2<- function(a,b) {
 }
 
 
+MODcheckMasterList4<- function(newseq, master) {
+  #input is a sequence in the form of a string and output is dataframe of matches
+  
+  #make dataframe for the matches to return in
+  matchesList = data.frame()
+  len = dim(master)[1]
+  count = 1
+  #loop through all possible sequences in database
+  for (i in 1:7021) { #modify this loop range to run through subset of database
+    #reset varible to not found and then check if it matches
+    print(i)
+    found = FALSE
+    overlap = overlapIsTrue(newseq,master[i,1])
+    
+    #looks for overlap or one inside the other
+    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE) | overlap )
+    
+    if (found == TRUE) {
+      matchesList[count,1]= master[i,1]
+      matchesList[count,2]= master[i,2]
+      matchesList[count,3]= master[i,3]
+      print(i)
+      print("match found")
+      count = 1+count
+    }
+  }
+  
+  
+  return(matchesList)
+}
+
 
 overlapIsTrue <- function(long, short) {
   #function inputs two strings and checks to see if they have a matching overlapping portion
   #returns true if match is found
-  
+  print(long)
+  print(short)
   t = pairwiseAlignment(long, short) # align strings to see where they overlap
   
   shortindex = t@subject@range@start
@@ -180,25 +205,8 @@ overlapIsTrue <- function(long, short) {
 
 
 
-addPriSeq3 <- function(pri,sec) {
-  #addPriSeq inputs two strings of same length and outputs a string that is the combined version according to IUPAC codes
-  
-  #checking if same length otherwise error message
-  len = nchar(pri)
-  len2 = nchar(sec)
-  if (len != len2) {return ("input sequences different lengths")}
-  
-  #adding the elements
-  combined = ""
-  for (i in 1:len) {
-    newchar = addbases2(substr(pri,i,i), substr(sec,i,i))
-    combined= paste0(combined, newchar)
-  }
-  
-  #returning the added sequence
-  return (AddedSeq = combined)
-}
 
 
-
-
+sink("C:/Users/amw346/Desktop/testerrror.txt")
+compareHap("C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-26M kdrFL-R7 s kdrFL.ab1", newCombinedNoGapAllAdded)
+sink()
