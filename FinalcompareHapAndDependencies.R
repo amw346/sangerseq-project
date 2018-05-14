@@ -2,17 +2,17 @@
 #also contains all the dependant functions called in compareHap()
 #made in R version 3.4.2
 
-#necessary packages: sangerseqR, Biostrings, BioCGenerics, parallel
+#necessary packages: sangerseqR, Biostrings, BioCGenerics, parallel, stringi
 library(stringi)
 
 #examples of how to use function and arguments
 #example file="C:/Users/amw346/Desktop/aabys11May16-3F kdrFL-R7 s kdrFL.ab1"
 #example database: newCombinedNoGapAllAdded
-compareHap(file, newCombinedNoGapAllAdded)
+#compareHap(file, newCombinedNoGapAllAdded)
 
 #warnings
 #addbases2 requires capital letters
-#you should run library(stringi)before hand otherwise stri_detect_fixed will throw error
+#you should run library(stringi) before hand otherwise stri_detect_fixed will throw error
 
 
 compareHap<- function(file, master) {
@@ -205,6 +205,66 @@ overlapIsTrue <- function(long, short) {
 
 
 
+
+#Other Code for specific situations
+
+
+
+#For comparing against only the homozygous section of database 
+MODcheckmasterList7 <- function(newseq, master) {
+  matchesList = data.frame()
+  len = dim(master)[1]
+  count = 1
+  for (i in 6903:7021) {
+
+    found = FALSE
+    overlap = overlapIsTrue(newseq,master[i,1])
+    
+    found = (stri_detect_fixed(master[i,1],newseq, case_insensitive = TRUE) |stri_detect_fixed(newseq, master[i,1], case_insensitive = TRUE) | overlap )
+    
+    if (found == TRUE) {
+      matchesList[count,1]= master[i,1]
+      matchesList[count,2]= master[i,2]
+      matchesList[count,3]= master[i,3]
+      print(i)
+      print("match found")
+      
+      print(count)
+    }
+    
+  }
+  count = 1+count
+  
+  return(matchesList)
+}
+
+
+#Fuzzy match
+
+function(newseq, master) {
+  matchesList = data.frame()
+  count = 1
+  for (i in 1:7021) {
+    
+    found = FALSE
+    alignseq = pairwiseAlignment(newseq,master[i,1])
+    sum = summary(alignseq)
+    #modify line below to change match requirements
+    found = (sum@nmismatch < 2) & (sum@ninsertion[2] ==0 ) & (sum@ndeletion[2] == 0)
+    
+    if (found == TRUE) {
+      matchesList[count,1]= master[i,1]
+      matchesList[count,2]= master[i,2]
+      matchesList[count,3]= master[i,3]
+      count = 1+count
+      print(i)
+      print("match found")
+      
+    }
+  }
+  
+  return(matchesList)
+}
 
 
 sink("C:/Users/amw346/Desktop/testerrror.txt")
