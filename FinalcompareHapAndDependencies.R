@@ -267,6 +267,3 @@ function(newseq, master) {
 }
 
 
-sink("C:/Users/amw346/Desktop/testerrror.txt")
-compareHap("C:/Users/amw346/Desktop/KS17 kdr sequences/KS2017_18Jul17-26M kdrFL-R7 s kdrFL.ab1", newCombinedNoGapAllAdded)
-sink()
